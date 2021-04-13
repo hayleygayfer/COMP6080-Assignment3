@@ -8,7 +8,6 @@ import {
 
 import GameEdit from './GameEdit'
 import GameResults from './GameResults'
-import QuestionEdit from './QuestionEdit'
 
 function Dashboard () {
   return (
@@ -23,9 +22,6 @@ function Dashboard () {
               <Link to="/dashboard/game_edit">Edit Game</Link>
             </li>
             <li>
-              <Link to="/dashboard/question_edit">Edit Game Question</Link>
-            </li>
-            <li>
               <Link to="/dashboard/game_results">Get Game Results</Link>
             </li>
           </ul>
@@ -33,9 +29,6 @@ function Dashboard () {
         <Switch>
           <Route path="/dashboard/game_edit">
             <GameEdit />
-          </Route>
-          <Route path="/dashboard/question_edit">
-            <QuestionEdit />
           </Route>
           <Route path="/dashboard/game_results">
             <GameResults />
