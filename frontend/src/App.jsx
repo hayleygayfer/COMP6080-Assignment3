@@ -6,10 +6,11 @@ import {
   Link,
 } from 'react-router-dom';
 
-// Import components
+// Import pages
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import PlayJoin from './pages/PlayJoin'
 
 import './App.css';
 
@@ -17,6 +18,7 @@ function App () {
   return (
     <Router>
       <div>
+        {/* Unique routes stubs */}
         <nav>
           <ul>
             <li>
@@ -27,6 +29,9 @@ function App () {
             </li>
             <li>
               <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/play_join">Join Game</Link>
             </li>
           </ul>
         </nav>
@@ -39,6 +44,9 @@ function App () {
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/play_join">
+            <PlayJoin />
           </Route>
         </Switch>
       </div>
