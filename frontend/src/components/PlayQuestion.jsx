@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /* STUB */
-
-function PlayQuestion ({playID}) {
+function PlayQuestion ({ playID }) {
+  // commenting out temporarily to avoid linting errors
+  /*
   const getQuestion = () => {
     fetch(`http://localhost:5005/${playID}/question`, {
       method: 'GET',
@@ -21,9 +23,12 @@ function PlayQuestion ({playID}) {
   };
 
   const [questionData, setQuestionData] = React.useState('');
+  */
   return <>
     Stub
   </>
 }
-
+PlayQuestion.propTypes = {
+  playID: PropTypes.number
+};
 export default PlayQuestion;

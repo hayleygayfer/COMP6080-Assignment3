@@ -10,6 +10,8 @@ import GameEdit from './GameEdit'
 import GameResults from './GameResults'
 
 function Dashboard () {
+  const token = localStorage.getItem('token')
+  console.log('ayyy dashboard has token:', token)
   return (
     <Router>
       <div>

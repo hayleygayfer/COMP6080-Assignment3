@@ -1,8 +1,10 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
 function Register () {
+  const history = useHistory();
   // explaination: async means: don't execute more stuff. wait till this finishes.
   // simpler than .then
   // the syntax:
@@ -22,8 +24,12 @@ function Register () {
         password: passwordInput,
         name: nameInput
       })
-      if (request.status === 200) console.log('Successful Login');
-      else throw request.status
+      if (request.status === 200) {
+        console.log('Successful Login');
+        const data = await request.json();
+        localStorage.setItem('token', data.token);
+        history.push('/dashboard');
+      } else throw request.status
     } catch (error) {
       alert(error)
     }

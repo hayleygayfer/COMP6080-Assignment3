@@ -1,8 +1,17 @@
 import React from 'react';
+/*
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom';
+import Dashboard from './Dashboard'
+*/
+import { useHistory } from 'react-router-dom';
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
 function Login () {
+  const history = useHistory();
   const loginRequest = async () => {
     try {
       const request = await api.makeAPIRequest('admin/auth/login', '', 'POST', '', {
@@ -14,7 +23,8 @@ function Login () {
         // send them to dashboard
         const data = await request.json();
         console.log(data.token)
-        return data.token
+        localStorage.setItem('token', data.token);
+        history.push('/dashboard');
         // get token... store somewhere
       } else throw request.status
     } catch (error) {

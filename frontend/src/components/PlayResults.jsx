@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /* STUB */
-
-function PlayResults ({playID}) {
+function PlayResults ({ playID }) {
+  /*
   const getResults = () => {
     fetch(`http://localhost:5005/${playID}/results`, {
       method: 'GET',
@@ -21,9 +22,13 @@ function PlayResults ({playID}) {
   };
 
   const [gameResults, setGameResults] = React.useState('');
+  */
   return <>
     Stub
   </>
 }
+PlayResults.propTypes = {
+  playID: PropTypes.number
+};
 
 export default PlayResults;
