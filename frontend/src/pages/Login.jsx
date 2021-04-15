@@ -1,29 +1,27 @@
 import React from 'react';
+import API from '../api.js';
+const api = new API('http://localhost:5005');
 
 function Login () {
-  const sendEmails = () => {
-    // make api request
-    // then copy this into ... register
-    console.log(`login request with ${emailInput} and ${passwordInput}`)
-    // will put this part into a function once i get it working, similar to this post: https://edstem.org/courses/5307/discussion/430203
-    fetch('http://localhost:5005/admin/auth/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
+  const loginRequest = async () => {
+    try {
+      const request = await api.makeAPIRequest('admin/auth/login', '', 'POST', '', {
         email: emailInput,
-        password: passwordInput
-      }
-    })
-    // Here is the catch for the fetch, I wasn't sure if it was intentionally left out so I've commented it out
-    /* ).then(data => {
-      if (data.status === 200) console.log('Successful Login');
-    }).catch((error) => {
-      alert('Error: ', error);
-    })*/
+        password: passwordInput,
+      })
+      if (request.status === 200) {
+        console.log('Successful Login');
+        // send them to dashboard
+        const data = await request.json();
+        console.log(data.token)
+        return data.token
+        // get token... store somewhere
+      } else throw request.status
+    } catch (error) {
+      alert(error)
+    }
   }
+
   const [emailInput, setEmailInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
   return <>
@@ -46,7 +44,7 @@ function Login () {
         />
       </div>
     </div>
-    <button onClick={sendEmails}> Send </button>
+    <button onClick={loginRequest}> Send </button>
   </>;
 }
 

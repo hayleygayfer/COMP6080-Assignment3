@@ -1,24 +1,39 @@
 import React from 'react';
+import API from '../api.js';
+const api = new API('http://localhost:5005');
 
 function Register () {
-  const sendEmails = () => {
-    // make api request
-    // then copy this into ... register
-    console.log(`register request with ${emailInput} and ${passwordInput} and ${nameInput}`)
-    // will put this part into a function once i get it working, similar to this post: https://edstem.org/courses/5307/discussion/430203
-    fetch('http://localhost:5005/admin/auth/register', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
+  // explaination: async means: don't execute more stuff. wait till this finishes.
+  // simpler than .then
+  // the syntax:
+  // const function = async () -> {
+  //   try {
+  //     const request = await (api request.....)
+  //     [if request status, not 200, throw error... which is caught by catch]
+  //   }
+  //   catch (error) {
+  //     error handling...
+  //   }
+  // }
+  const registerRequest = async () => {
+    try {
+      const request = await api.makeAPIRequest('admin/auth/register', '', 'POST', '', {
         email: emailInput,
         password: passwordInput,
         name: nameInput
-      }
+      })
+      if (request.status === 200) console.log('Successful Login');
+      else throw request.status
+    } catch (error) {
+      alert(error)
+    }
+    console.log({
+      email: emailInput,
+      password: passwordInput,
+      name: nameInput
     })
   }
+
   const [emailInput, setEmailInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
   const [nameInput, setNameInput] = React.useState('');
@@ -51,7 +66,7 @@ function Register () {
         />
       </div>
     </div>
-    <button onClick={sendEmails}> Send </button>
+    <button onClick={registerRequest}> Send </button>
   </>;
 }
 
