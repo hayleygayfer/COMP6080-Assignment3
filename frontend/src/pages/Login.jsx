@@ -17,6 +17,12 @@ function Login () {
         password: passwordInput
       }
     })
+    // Here is the catch for the fetch, I wasn't sure if it was intentionally left out so I've commented it out
+    /* ).then(data => {
+      if (data.status === 200) console.log('Successful Login');
+    }).catch((error) => {
+      alert('Error: ', error);
+    })*/
   }
   const [emailInput, setEmailInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
