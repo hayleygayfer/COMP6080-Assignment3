@@ -1,6 +1,11 @@
 .App {
   text-align: center;
 }
+body {
+  background-color: #f2f2f2;
+  color: #333333;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +40,34 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.loginOrRegister {
+  text-align: center; 
+  background-color: #ffffff;
+  margin: auto;
+  width: 44%;
+  padding: 10px;
+  font-size: 2vh;
+}
+
+.navBar {
+  background-color: #fbd3ff;
+}
+
+.button {
+  background-color: #cccccc;
+  color: rgb(255, 255, 255);
+  box-shadow: none;
+  cursor: not-allowed;
+  font-size: 2vh;
+  border: 0px;
+  padding: 8px;
+  width: 40%;
+  margin: 10px;
+  font-weight: bold;
+}
+
+.button:hover {
+  background-color: rgb(158, 158, 158);
 }

@@ -31,13 +31,11 @@ function Register () {
         history.push('/dashboard');
       } else throw request.status
     } catch (error) {
-      alert(error)
+      setEmailInput('')
+      setPasswordInput('')
+      setNameInput('')
+      alert('There is already a registered account with that email')
     }
-    console.log({
-      email: emailInput,
-      password: passwordInput,
-      name: nameInput
-    })
   }
 
   const [emailInput, setEmailInput] = React.useState('');
@@ -45,8 +43,8 @@ function Register () {
   const [nameInput, setNameInput] = React.useState('');
 
   return <>
-    <h2> Register, Mlord </h2>
-    <div>
+    <div className='loginOrRegister'>
+      <h2> Register </h2>
       <div>
         Email:
         <input
@@ -71,8 +69,8 @@ function Register () {
           value={nameInput}
         />
       </div>
+      <button className='button' onClick={registerRequest}> Register </button>
     </div>
-    <button onClick={registerRequest}> Send </button>
   </>;
 }
 

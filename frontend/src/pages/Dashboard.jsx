@@ -1,4 +1,5 @@
 import React from 'react';
+import '../App.css'
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,7 +15,7 @@ function Dashboard () {
   console.log('ayyy dashboard has token:', token)
   return (
     <Router>
-      <div>
+      <div className='App'>
         <p>Dashboard is a stub</p>
         {/* Unique routes stubs */}
         <nav>

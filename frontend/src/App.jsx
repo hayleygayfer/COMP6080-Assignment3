@@ -19,8 +19,8 @@ function App () {
     <Router>
       <div>
         {/* Unique routes stubs */}
-        <nav>
-          <ul>
+        <nav className='navBar'>
+          <ul className='App-link'>
             <li>
               <Link to="/login">Login</Link>
             </li>

@@ -1,14 +1,12 @@
 import React from 'react';
-/*
-import {
-  BrowserRouter as Router,
-  Route,
-} from 'react-router-dom';
-import Dashboard from './Dashboard'
-*/
 import { useHistory } from 'react-router-dom';
+import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
+
+// /////// TODO
+// add pretty CSS to login
+//
 
 function Login () {
   const history = useHistory();
@@ -28,15 +26,18 @@ function Login () {
         // get token... store somewhere
       } else throw request.status
     } catch (error) {
-      alert(error)
+      // reset username and password fields
+      setEmailInput('')
+      setPasswordInput('')
+      alert('Invalid username or password')
     }
   }
 
   const [emailInput, setEmailInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
   return <>
-    <h2> Login, Darling </h2>
-    <div>
+    <div className='loginOrRegister'>
+      <h2> Login </h2>
       <div>
         Email:
         <input
@@ -53,8 +54,8 @@ function Login () {
           value={passwordInput}
         />
       </div>
+      <button className='button' onClick={loginRequest}> Login </button>
     </div>
-    <button onClick={loginRequest}> Send </button>
   </>;
 }
 
