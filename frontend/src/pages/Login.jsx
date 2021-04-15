@@ -9,7 +9,7 @@ function Login () {
     fetch('http://localhost:5005/admin/auth/login', {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
+        accept: 'application/json',
         'Content-Type': 'application/json',
       },
       data: {
@@ -18,11 +18,11 @@ function Login () {
       }
     })
     // Here is the catch for the fetch, I wasn't sure if it was intentionally left out so I've commented it out
-    /* ).then(data => {
+  /* ).then(data => {
       if (data.status === 200) console.log('Successful Login');
     }).catch((error) => {
       alert('Error: ', error);
-    })*/
+    }) */
   }
   const [emailInput, setEmailInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
