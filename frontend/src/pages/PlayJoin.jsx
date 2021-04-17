@@ -1,26 +1,35 @@
 import React from 'react';
+// import PlayQuestion from '../components/PlayQuestion'
+import { useHistory } from 'react-router-dom';
+import '../App.css'
+import API from '../api.js';
+const api = new API('http://localhost:5005');
 
 function PlayJoin () {
-  const joinGame = () => {
-    console.log(nameInput)
-    fetch(`http://localhost:5005/play/join/${sessionInput}`, {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        name: nameInput
-      }
-    }).then((data) => {
-      if (data.status === 200) console.log('Joined Game');
-    }).catch((error) => {
-      alert('Error: ', error);
-    });
-  };
-
   const [sessionInput, setSessionInput] = React.useState('');
   const [nameInput, setNameInput] = React.useState('');
+
+  const history = useHistory();
+  const joinGameRequest = async () => {
+    console.log(sessionInput);
+    try {
+      const request = await api.makeAPIRequest(`admin/play/join/${sessionInput}`, '', 'POST', '', {
+        name: nameInput,
+      })
+      if (request.status === 200) {
+        console.log('Joined Game');
+        const data = await request.json();
+        console.log(data.playerId);
+        localStorage.setItem('playID', data.playerId);
+        history.push('/play_join');
+      } else throw request.status
+    } catch (error) {
+      setNameInput('');
+      setSessionInput('');
+      alert('Invalid Input');
+    }
+  }
+
   return <>
     <h2>Join Game Session</h2>
     <div>
@@ -41,7 +50,7 @@ function PlayJoin () {
         />
       </div>
     </div>
-    <button onClick={joinGame}> Join </button>
+    <button onClick={joinGameRequest}> Join </button>
   </>
 }
 
