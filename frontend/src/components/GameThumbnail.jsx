@@ -9,6 +9,8 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../App.css'
+import API from '../api.js';
+const api = new API('http://localhost:5000');
 
 /* STUB */
 function GameThumbnail ({ gameData }) {
@@ -18,9 +20,9 @@ function GameThumbnail ({ gameData }) {
     gameThumbnails.push(<>
       <Router>
         <div>
-          id: {gameData.id}
-          Name: {gameData.name}
-          <img src={gameData.thumbnail}/>
+          id: {gameData[i].id}
+          Name: {gameData[i].name}
+          <img src={gameData[i].thumbnail}/>
           <nav>
             <ul>
               {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
@@ -34,10 +36,10 @@ function GameThumbnail ({ gameData }) {
           </nav>
           <Switch>
             <Route path="/dashboard/game_edit">
-              <GameEdit />
+              <GameEdit input={gameData[i].id}/>
             </Route>
             <Route path="/dashboard/game_results">
-              <GameResults />
+              <GameResults input={gameData[i].id}/>
             </Route>
           </Switch>
         </div>

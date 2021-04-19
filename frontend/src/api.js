@@ -29,12 +29,13 @@ export default class API {
     // data = {name: 'big nose', email: 'bignose@gmail.com'} etc
     const headersObj = {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     };
     if (token !== '') {
-      headersObj.Authorization = 'Bearer ' + token;
+      headersObj.Authorization = `Bearer ${token}`;
     }
     const headers = new Headers(headersObj);
+    console.log(headersObj);
     const requestsObj = {
       method: method,
       headers: headers,
@@ -44,7 +45,8 @@ export default class API {
     if (data !== '') {
       requestsObj.body = JSON.stringify(data);
     }
-    const request = new Request(`${this.url}/${path}${urlParameters}`, requestsObj)
+    const request = new Request(`${this.url}/${path}${urlParameters}`, requestsObj);
+    console.log(request);
     if (method === 'POST') {
       // if method is post, DON'T return JSON
       return fetch(request)

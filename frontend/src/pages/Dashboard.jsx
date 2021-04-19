@@ -7,6 +7,7 @@ const api = new API('http://localhost:5000');
 
 function Dashboard () {
   const token = localStorage.getItem('token');
+  console.log(token);
 
   const history = useHistory();
 
@@ -43,7 +44,7 @@ function Dashboard () {
         // send them to dashboard
         const data = await request.json();
         history.push('/dashboard');
-        setGameData(data.quizzes)
+        setGameData(data.quizzes);
         console.log(gameData);
       } else throw request.status
     } catch (error) {
