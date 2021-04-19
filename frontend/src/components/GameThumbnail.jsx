@@ -9,8 +9,6 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../App.css'
-import API from '../api.js';
-const api = new API('http://localhost:5000');
 
 /* STUB */
 function GameThumbnail ({ gameData }) {

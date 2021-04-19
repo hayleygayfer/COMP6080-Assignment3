@@ -4,13 +4,15 @@ import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5000');
 
-function QuestionEdit (gameId, questionId) {
+function QuestionEdit ({ gameId, questionId }) {
+  const token = localStorage.getItem('token');
   const [gameData, setGameData] = React.useState('');
   const [questionString, setQuestionString] = React.useState('');
   const [questionAnswers, setQuestionAnswers] = React.useState('');
   const [timeLimit, setTimeLimit] = React.useState('');
   const [questionMedia, setQuestionMedia] = React.useState('');
   const [questionType, setQuestionType] = React.useState('');
+  const [correctAnswers, setCorrectAnswers] = React.useState('');
 
   const getGameQuestionsRequest = async (quizId) => {
     try {
@@ -32,6 +34,7 @@ function QuestionEdit (gameId, questionId) {
   setTimeLimit(gameData.questions[questionId].timeLimit);
   setQuestionMedia(gameData.questions[questionId].imgSource);
   setQuestionType(gameData.questions[questionId].questionType);
+  setCorrectAnswers(gameData.questions[questionId].correctAnswers);
 
   const editGameQuestionsRequest = async (quizId, deleteQuestion) => {
     if (deleteQuestion === true) {
@@ -42,6 +45,7 @@ function QuestionEdit (gameId, questionId) {
       gameData.questions[questionId].timeLimit = timeLimit;
       gameData.questions[questionId].imgSource = questionMedia;
       gameData.questions[questionId].questionType = questionType;
+      gameData.questions[questionId].correctAnswers = correctAnswers;
     }
 
     try {
@@ -62,7 +66,7 @@ function QuestionEdit (gameId, questionId) {
         value={questionString}
       />
       Question Type: <input
-        type="text"
+        type="text"s
         onChange={e => setQuestionType(e.target.value)}
         value={questionType}
       />
@@ -71,10 +75,15 @@ function QuestionEdit (gameId, questionId) {
         onChange={e => setTimeLimit(e.target.value)}
         value={timeLimit}
       />
-      Answers: <input
+      All Answer(s): <input
         type="text"
         onChange={e => setQuestionAnswers(e.target.value)}
         value={questionAnswers}
+      />
+      Correct Answer(s) (Part of your current answers): <input
+        type="text"
+        onChange={e => setCorrectAnswers(e.target.value)}
+        value={correctAnswers}
       />
       Image or Video: <input
         type="text"

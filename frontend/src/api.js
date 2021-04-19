@@ -35,7 +35,6 @@ export default class API {
       headersObj.Authorization = `Bearer ${token}`;
     }
     const headers = new Headers(headersObj);
-    console.log(headersObj);
     const requestsObj = {
       method: method,
       headers: headers,
@@ -46,7 +45,6 @@ export default class API {
       requestsObj.body = JSON.stringify(data);
     }
     const request = new Request(`${this.url}/${path}${urlParameters}`, requestsObj);
-    console.log(request);
     if (method === 'POST') {
       // if method is post, DON'T return JSON
       return fetch(request)

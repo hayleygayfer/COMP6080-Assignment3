@@ -4,7 +4,8 @@ import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5000');
 
-function AddQuestion (gameId) {
+function AddQuestion ({ gameId }) {
+  const token = localStorage.getItem('token');
   const [gameData, setGameData] = React.useState('');
   const [questionString, setQuestionString] = React.useState('');
   const [questionAnswers, setQuestionAnswers] = React.useState('');

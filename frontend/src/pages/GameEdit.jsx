@@ -6,12 +6,14 @@ import {
   Link,
 } from 'react-router-dom';
 import QuestionEdit from './QuestionEdit'
+import AddQuestion from './AddQuestion'
 import PropTypes from 'prop-types';
 import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5000');
 
-function GameEdit (gameId) {
+function GameEdit ({ gameId }) {
+  const token = localStorage.getItem('token');
   const [gameQuestions, setGameQuestions] = React.useState('');
 
   const getGameQuestionsRequest = async (quizId) => {
@@ -31,6 +33,10 @@ function GameEdit (gameId) {
   const questionList = [];
 
   for (let i = 0; i < gameQuestions.length; i++) {
+    const inputs = {
+      gameId: gameQuestions[i].id,
+      questionId: i
+    }
     questionList.push(<>
       <Router>
         <div>
@@ -50,7 +56,7 @@ function GameEdit (gameId) {
           </nav>
         <Switch>
           <Route path="/dashboard/game_edit/question">
-            <QuestionEdit input={gameQuestions[i].id, i}/>
+            <QuestionEdit input={inputs}/>
           </Route>
         </Switch>
         </div>

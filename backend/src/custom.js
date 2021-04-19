@@ -4,8 +4,15 @@
  to return to a "player"
 */
 export const quizQuestionPublicReturn = question => {
-  console.log('See question: ', question);
-  return question;
+  const publicReturn = {
+    questionType: question.questionType,
+    questionString: question.String,
+    timeLimit: question.timeLimit,
+    pointValue: question.pointValue,
+    answers: question.answers,
+    mediaSource: question.mediaSource
+  }
+  return publicReturn;
 };
 
 /*
@@ -13,9 +20,7 @@ export const quizQuestionPublicReturn = question => {
  the correct answers (minimum 1).
 */
 export const quizQuestionGetCorrectAnswers = question => {
-  return [
-    123,
-  ]; // For a single answer
+  return question.correctAnswers;
 };
 
 /*
@@ -23,11 +28,7 @@ export const quizQuestionGetCorrectAnswers = question => {
  all of the answers, correct or incorrect.
 */
 export const quizQuestionGetAnswers = question => {
-  return [
-    123,
-    456,
-    678,
-  ]; // For a single answer
+  return question.answers;
 };
 
 /*
@@ -35,5 +36,5 @@ export const quizQuestionGetAnswers = question => {
  of the question once it starts. (Seconds)
 */
 export const quizQuestionGetDuration = question => {
-  return 10;
+  return question.timelimit;
 };
