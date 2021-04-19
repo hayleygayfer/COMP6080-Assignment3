@@ -32,7 +32,7 @@ export default class API {
       'Content-Type': 'application/json'
     };
     if (token !== '') {
-      headersObj.Authorization = 'Token ' + token;
+      headersObj.Authorization = 'Bearer ' + token;
     }
     const headers = new Headers(headersObj);
     const requestsObj = {

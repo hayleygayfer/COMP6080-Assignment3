@@ -1,44 +1,72 @@
 import React from 'react';
+// import GameThumbnail from '../components/GameThumbnail'
 import '../App.css'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-} from 'react-router-dom';
-
-import GameEdit from './GameEdit'
-import GameResults from './GameResults'
+import { useHistory } from 'react-router-dom';
+import API from '../api.js';
+const api = new API('http://localhost:5000');
 
 function Dashboard () {
-  const token = localStorage.getItem('token')
-  console.log('ayyy dashboard has token:', token)
+  const token = localStorage.getItem('token');
+
+  const history = useHistory();
+
+  const [gameData, setGameData] = React.useState('');
+  const [newQuizId, setNewQuizId] = React.useState('');
+  const [nameInput, setNameInput] = React.useState('');
+
+  const createGameRequest = async () => {
+    try {
+      const request = await api.makeAPIRequest('admin/quiz/new', token, 'POST', '', {
+        name: nameInput,
+      });
+      if (request.status === 200) {
+        console.log('Game Created');
+        // send them to dashboard
+        const data = await request.json();
+        history.push('/dashboard');
+        setNewQuizId(data.quizId);
+        alert(`Game Created! id: ${newQuizId}`);
+        setNameInput('');
+        console.log(newQuizId);
+      } else throw request.status
+    } catch (error) {
+      setNameInput('');
+      alert('Invalid')
+    }
+  }
+
+  const gameListRequest = async () => {
+    try {
+      const request = await api.makeAPIRequest('admin/quiz', token, 'GET', '', '');
+      if (request.status === 200) {
+        console.log('Got Game List');
+        // send them to dashboard
+        const data = await request.json();
+        history.push('/dashboard');
+        setGameData(data.quizzes)
+        console.log(gameData);
+      } else throw request.status
+    } catch (error) {
+      alert(`Invalid token: ${error}`);
+    }
+  }
+
   return (
-    <Router>
       <div className='App'>
         <p>Dashboard is a stub</p>
         {/* Unique routes stubs */}
-        <nav>
-          <ul>
-            {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
-            <li>
-              <Link to="/dashboard/game_edit">Edit Game</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/game_results">Get Game Results</Link>
-            </li>
-          </ul>
-        </nav>
-        <Switch>
-          <Route path="/dashboard/game_edit">
-            <GameEdit />
-          </Route>
-          <Route path="/dashboard/game_results">
-            <GameResults />
-          </Route>
-        </Switch>
+        <div>
+          <input
+            type="text"
+            onChange={e => setNameInput(e.target.value)}
+            value={nameInput}
+          />
+          <button className='button' onClick={createGameRequest}> Create New Quiz </button>
+        </div>
+        <div>
+          <button className='button' onClick={gameListRequest}> Get Dash </button>
+        </div>
       </div>
-    </Router>
   );
 }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import '../App.css'
 import API from '../api.js';
-const api = new API('http://localhost:5005');
+const api = new API('http://localhost:5000');
 
 function PlayJoin () {
   const [sessionInput, setSessionInput] = React.useState('');
