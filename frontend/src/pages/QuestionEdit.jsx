@@ -19,11 +19,10 @@ function QuestionEdit (gId, qId) {
   const getGameQuestionsRequest = async (quizId) => {
     try {
       const request = await api.makeAPIRequest(`admin/quiz/${quizId}`, token, 'GET', '', '');
-      if (request.status === 200) {
+      if (request) {
         console.log('Got Game Data');
-        const data = await request.json();
-        setGameData(data);
-      } else throw request.status
+        setGameData(request);
+      }
     } catch (error) {
       alert(`Invalid Quiz Request: ${error}`);
       console.log(error);
@@ -33,6 +32,7 @@ function QuestionEdit (gId, qId) {
   let questionEditor = [];
   const openQuestionEditor = () => {
     getGameQuestionsRequest(gameId);
+    console.log(gameData)
 
     setQuestionString(gameData.questions[questionId].questionString);
     setQuestionAnswers(gameData.questions[questionId].answers);
@@ -93,10 +93,10 @@ function QuestionEdit (gId, qId) {
 
     try {
       const request = await api.makeAPIRequest(`admin/quiz/${quizId}`, token, 'PUT', '', gameData);
-      if (request.status === 200) {
+      if (request) {
         console.log('Updated Game Data');
         questionEditor = [];
-      } else throw request.status
+      }
     } catch (error) {
       alert(`Invalid Update Game Request: ${error}`);
       console.log(error);

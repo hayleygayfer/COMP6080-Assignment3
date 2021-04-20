@@ -8,6 +8,7 @@ import {
 import QuestionEdit from './QuestionEdit';
 import AddQuestion from '../components/AddQuestion';
 import PropTypes from 'prop-types';
+import Modal from '../components/Modal'
 import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
@@ -16,6 +17,7 @@ function GameEdit (id) {
   const token = localStorage.getItem('token');
   const [gameQuestions, setGameQuestions] = React.useState('');
   const gameId = id.input;
+  const [show, setShow] = React.useState(false);
 
   const getGameQuestionsRequest = async (quizId) => {
     try {
@@ -24,50 +26,54 @@ function GameEdit (id) {
         console.log('Got Game Questions');
         console.log(request.questions)
         setGameQuestions(request.questions);
-      } else {
-        return;
+        console.log(request.questions);
       }
     } catch (error) {
       alert(`Invalid Question Request: ${error}`);
       console.log(error);
     }
   }
+  // quick change
 
   let questionList = [];
   const displayQuestions = (gameId) => {
-    if (!questionList === []) {
+    if (!questionList.length) {
       questionList = [];
       return;
     }
     getGameQuestionsRequest(gameId);
-    if (!gameQuestions) return;
+
+    if (!gameQuestions) {
+      console.log('Could not get gameData');
+      return;
+    }
 
     for (let i = 0; i < gameQuestions.length; i++) {
-      const questionPath = `/dashboard/game_edit/question?gameId=${gameId}&questionId=${i}`;
+      const questionPath = `/dashboard/game_edit/question/:${gameId}/:${i}`;
       const inputs = {
         gameId: gameId,
         questionId: i
       }
+      const modalInput = {
+        title: 'Edit Question',
+        content: <QuestionEdit input={inputs}/>
+      }
       questionList.push(<>
         <Router>
-          <div>
-            {gameQuestions[i].questionString}
-            Question Type: {gameQuestions[i].questionType}
-            Time limit: {gameQuestions[i].timeLimit}
-            Point Value: {gameQuestions[i].pointValue}
-            <img src={gameQuestions[i].imgsrc} />
-            Answers: {gameQuestions[i].answers}
+          <div className="question-data">
+            Question: {gameQuestions[i].questionString}<br/>
+            Question Type: {gameQuestions[i].questionType}<br/>
+            Time limit: {gameQuestions[i].timeLimit}<br/>
+            Point Value: {gameQuestions[i].pointValue}<br/>
+            <img src={gameQuestions[i].mediaSource} /><br/>
+            Answers: {gameQuestions[i].answers}<br/>
             <nav>
-              <ul>
-                {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
-                <li>
-                  <Link to={questionPath}>Edit Game Question</Link>
-                </li>
-              </ul>
+              {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
+              <Link to={questionPath} onClick={() => setShow(true)}>Edit Game Question</Link>
             </nav>
           <Switch>
             <Route path={questionPath}>
-              <QuestionEdit input={inputs}/>
+              <Modal input={modalInput} show={show} onClose={() => setShow(false)}/>
             </Route>
           </Switch>
           </div>
@@ -76,7 +82,12 @@ function GameEdit (id) {
     }
   }
 
-  const gamePath = `/dashboard/game_edit/question?=gameId${gameId}`;
+  const gamePath = `/dashboard/game_edit/question/:${gameId}`;
+
+  const addInput = {
+    title: 'Add Question',
+    content: <AddQuestion input={gameId}/>
+  }
 
   const displayQuestionsEverySecond = (gameId) => {
     const [seconds, setSeconds] = React.useState(0);
@@ -96,16 +107,11 @@ function GameEdit (id) {
     <Router>
       <div>
         <nav>
-          <ul>
-            {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
-            <li>
-              <Link to={gamePath}>Add Question</Link>
-            </li>
-          </ul>
+          <Link to={gamePath} onClick={() => setShow(true)}>Add Question</Link>
         </nav>
         <Switch>
           <Route path={gamePath}>
-            <AddQuestion input={gameId}/>
+            <Modal input={addInput} show={show} onClose={() => setShow(false)}/>
           </Route>
         </Switch>
       </div>

@@ -99,6 +99,8 @@ body {
 
 .modal-body {
   padding: 10px;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
@@ -110,4 +112,10 @@ body {
   width: 60%;
   display: flex;
   flex-direction: column;
+}
+
+.question-data {
+  background-color: lightgray;
+  padding: 10px;
+  margin: 5px;
 }

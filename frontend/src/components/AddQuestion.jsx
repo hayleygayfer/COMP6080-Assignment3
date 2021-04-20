@@ -16,11 +16,10 @@ function AddQuestion (id) {
   const getGameQuestionsRequest = async (quizId) => {
     try {
       const request = await api.makeAPIRequest(`admin/quiz/${quizId}`, token, 'GET', '', '');
-      if (request.status === 200) {
+      if (request) {
         console.log('Got Game Data');
-        const data = await request.json();
-        setGameData(data);
-      } else throw request.status
+        setGameData(request);
+      }
     } catch (error) {
       alert(`Invalid Quiz Request: ${error}`);
       console.log(error);
@@ -28,7 +27,7 @@ function AddQuestion (id) {
   }
 
   let questionEditor = [];
-  const openQuestionEditor = () => {
+  const openQuestionEditor = (gameId) => {
     getGameQuestionsRequest(gameId);
     questionEditor.push(<>
       <div>
@@ -70,10 +69,11 @@ function AddQuestion (id) {
 
     try {
       const request = await api.makeAPIRequest(`admin/quiz/${quizId}`, token, 'PUT', '', gameData);
-      if (request.status === 200) {
+      console.log(request);
+      if (request) {
         console.log('Updated Game Data');
         questionEditor = [];
-      } else throw request.status
+      }
     } catch (error) {
       alert(`Invalid Update Question Request: ${error}`);
       console.log(error);
@@ -81,7 +81,7 @@ function AddQuestion (id) {
   }
 
   return (<>
-    <button className='button' onClick={openQuestionEditor()}> Open Editor </button>
+    <button className='button' onClick={openQuestionEditor(gameId)}> Open Editor </button>
     {questionEditor}
   </>);
 }

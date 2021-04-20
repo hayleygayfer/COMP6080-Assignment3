@@ -20,7 +20,7 @@ function Modal (modalInput) {
           {content}
         </div>
         <div className="modal-footer">
-          {/* <button onClick={modalInput.onClose} className="button">Close</button> */}
+          <button onClick={modalInput.onClose} className="button">Close</button>
         </div>
       </div>
     </div>

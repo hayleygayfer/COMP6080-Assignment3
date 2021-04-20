@@ -23,8 +23,8 @@ function GameThumbnail (gameList) {
   }
 
   for (let i = 0; i < gameData.length; i++) {
-    // const gameEditPath = `/dashboard/game_edit?gameId=${gameData[i].id}`;
-    const gameResultsPath = `/dashboard/game_results?gameId=${gameData[i].id}`;
+    const gameEditPath = `/dashboard/game_edit/:${gameData[i].id}`;
+    const gameResultsPath = `/dashboard/game_results/:${gameData[i].id}`;
     const editInput = {
       title: 'Edit Game',
       content: <GameEdit input={gameData[i].id}/>
@@ -35,15 +35,15 @@ function GameThumbnail (gameList) {
     }
     gameThumbnails.push(<>
       <Router>
-        <div className="game-card">
+        <div className="game-card" key='game-card'>
           id: {gameData[i].id}<br/>
           Name: {gameData[i].name}<br/>
-          <img src={gameData[i].thumbnail}/><br/>
-          <nav>
+          <img src={gameData[i].thumbnail} key='img'/><br/>
+          <nav key='nav'>
             <ul>
               {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
               <li>
-                <Link to='/dashboard/game_edit' onClick={() => setShow(true)}>Edit Game</Link>
+                <Link to={gameEditPath} onClick={() => setShow(true)}>Edit Game</Link>
               </li>
               <li>
                 <Link to={gameResultsPath} onClick={() => setShow(true)}>Get Game Results</Link>
@@ -51,7 +51,7 @@ function GameThumbnail (gameList) {
             </ul>
           </nav>
           <Switch>
-            <Route path='/dashboard/game_edit'>
+            <Route path={gameEditPath}>
               <Modal input={editInput} show={show} onClose={() => setShow(false)}/>
             </Route>
             <Route path={gameResultsPath}>
