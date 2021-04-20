@@ -1,5 +1,5 @@
 import React from 'react';
-// import GameThumbnail from '../components/GameThumbnail'
+import GameThumbnail from '../components/GameThumbnail'
 import '../App.css'
 import { useHistory } from 'react-router-dom';
 import API from '../api.js';
@@ -39,17 +39,20 @@ function Dashboard () {
   const gameListRequest = async () => {
     try {
       const request = await api.makeAPIRequest('admin/quiz', token, 'GET', '', '');
-      if (request.status === 200) {
+      if (request) {
         console.log('Got Game List');
         // send them to dashboard
-        const data = await request.json();
         history.push('/dashboard');
-        setGameData(data.quizzes);
+        setGameData(request.quizzes);
         console.log(gameData);
-      } else throw request.status
+      } else {
+        return false;
+      }
     } catch (error) {
       alert(`Invalid token: ${error}`);
+      return false;
     }
+    return true;
   }
 
   return (
@@ -64,9 +67,8 @@ function Dashboard () {
           />
           <button className='button' onClick={createGameRequest}> Create New Quiz </button>
         </div>
-        <div>
-          <button className='button' onClick={gameListRequest}> Get Dash </button>
-        </div>
+        <button className='button' onClick={gameListRequest}> Display Dash </button>
+        <GameThumbnail gameList={gameData} />
       </div>
   );
 }

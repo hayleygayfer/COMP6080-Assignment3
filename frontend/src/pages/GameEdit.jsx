@@ -5,16 +5,17 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-import QuestionEdit from './QuestionEdit'
-import AddQuestion from './AddQuestion'
+import QuestionEdit from './QuestionEdit';
+import AddQuestion from '../components/AddQuestion';
 import PropTypes from 'prop-types';
 import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5000');
 
-function GameEdit ({ gameId }) {
+function GameEdit (id) {
   const token = localStorage.getItem('token');
   const [gameQuestions, setGameQuestions] = React.useState('');
+  const gameId = id.input;
 
   const getGameQuestionsRequest = async (quizId) => {
     try {

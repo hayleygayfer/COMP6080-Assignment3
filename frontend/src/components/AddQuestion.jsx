@@ -4,13 +4,14 @@ import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5000');
 
-function AddQuestion ({ gameId }) {
+function AddQuestion (id) {
   const token = localStorage.getItem('token');
   const [gameData, setGameData] = React.useState('');
   const [questionString, setQuestionString] = React.useState('');
   const [questionAnswers, setQuestionAnswers] = React.useState('');
   const [timeLimit, setTimeLimit] = React.useState('');
   const [questionMedia, setQuestionMedia] = React.useState('');
+  const gameId = id.input;
 
   const getGameQuestionsRequest = async (quizId) => {
     try {
@@ -25,7 +26,35 @@ function AddQuestion ({ gameId }) {
     }
   }
 
-  getGameQuestionsRequest(gameId);
+  let questionEditor = [];
+  const openQuestionEditor = () => {
+    getGameQuestionsRequest(gameId);
+    questionEditor.push(<>
+      <div>
+        Question: <input
+          type="text"
+          onChange={e => setQuestionString(e.target.value)}
+          value={questionString}
+        /><br/>
+        Time Limit: <input
+          type="text"
+          onChange={e => setTimeLimit(e.target.value)}
+          value={timeLimit}
+        /><br/>
+        Answers: <input
+          type="text"
+          onChange={e => setQuestionAnswers(e.target.value)}
+          value={questionAnswers}
+        /><br/>
+        Image or Video: <input
+          type="text"
+          onChange={e => setQuestionMedia(e.target.value)}
+          value={questionMedia}
+        /><br/>
+      </div>
+      <button className='button' onClick={addGameQuestionsRequest(gameId)}> Submit Question </button>
+    </>)
+  }
 
   const newQuestion = {
     questionString: questionString,
@@ -41,6 +70,7 @@ function AddQuestion ({ gameId }) {
       const request = await api.makeAPIRequest(`admin/quiz/${quizId}`, token, 'PUT', '', gameData);
       if (request.status === 200) {
         console.log('Updated Game Data');
+        questionEditor = [];
       } else throw request.status
     } catch (error) {
       alert('Invalid');
@@ -48,29 +78,8 @@ function AddQuestion ({ gameId }) {
   }
 
   return (<>
-    <div>
-      Question: <input
-        type="text"
-        onChange={e => setQuestionString(e.target.value)}
-        value={questionString}
-      />
-      Time Limit: <input
-        type="text"
-        onChange={e => setTimeLimit(e.target.value)}
-        value={timeLimit}
-      />
-      Answers: <input
-        type="text"
-        onChange={e => setQuestionAnswers(e.target.value)}
-        value={questionAnswers}
-      />
-      Image or Video: <input
-        type="text"
-        onChange={e => setQuestionMedia(e.target.value)}
-        value={questionMedia}
-      />
-    </div>
-    <button className='button' onClick={addGameQuestionsRequest(gameId)}> Add Question </button>
+    <button className='button' onClick={openQuestionEditor()}> Open Editor </button>
+    {questionEditor}
   </>);
 }
 
