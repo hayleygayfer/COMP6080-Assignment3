@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../App.css'
 import API from '../api.js';
-const api = new API('http://localhost:5000');
+const api = new API('http://localhost:5005');
 
 function AddQuestion (id) {
   const token = localStorage.getItem('token');
@@ -22,7 +22,8 @@ function AddQuestion (id) {
         setGameData(data);
       } else throw request.status
     } catch (error) {
-      alert('Invalid');
+      alert(`Invalid Quiz Request: ${error}`);
+      console.log(error);
     }
   }
 
@@ -64,6 +65,7 @@ function AddQuestion (id) {
   };
 
   const addGameQuestionsRequest = async (quizId) => {
+    if (!gameData) return 1;
     gameData.questions.push(newQuestion);
 
     try {
@@ -73,7 +75,8 @@ function AddQuestion (id) {
         questionEditor = [];
       } else throw request.status
     } catch (error) {
-      alert('Invalid');
+      alert(`Invalid Update Question Request: ${error}`);
+      console.log(error);
     }
   }
 

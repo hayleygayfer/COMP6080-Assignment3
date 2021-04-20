@@ -1,6 +1,7 @@
 import React from 'react';
 import GameEdit from '../pages/GameEdit'
 import GameResults from '../pages/GameResults'
+import Modal from './Modal'
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,6 +15,7 @@ import '../App.css'
 function GameThumbnail (gameList) {
   const gameThumbnails = [];
   const gameData = gameList.gameList;
+  const [show, setShow] = React.useState(false);
 
   if (!gameData) {
     console.log(gameData)
@@ -21,9 +23,19 @@ function GameThumbnail (gameList) {
   }
 
   for (let i = 0; i < gameData.length; i++) {
+    // const gameEditPath = `/dashboard/game_edit?gameId=${gameData[i].id}`;
+    const gameResultsPath = `/dashboard/game_results?gameId=${gameData[i].id}`;
+    const editInput = {
+      title: 'Edit Game',
+      content: <GameEdit input={gameData[i].id}/>
+    }
+    const resultsInput = {
+      title: 'Results',
+      content: <GameResults input={gameData[i].id}/>
+    }
     gameThumbnails.push(<>
       <Router>
-        <div>
+        <div className="game-card">
           id: {gameData[i].id}<br/>
           Name: {gameData[i].name}<br/>
           <img src={gameData[i].thumbnail}/><br/>
@@ -31,27 +43,25 @@ function GameThumbnail (gameList) {
             <ul>
               {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
               <li>
-                <Link to="/dashboard/game_edit">Edit Game</Link>
+                <Link to='/dashboard/game_edit' onClick={() => setShow(true)}>Edit Game</Link>
               </li>
               <li>
-                <Link to="/dashboard/game_results">Get Game Results</Link>
+                <Link to={gameResultsPath} onClick={() => setShow(true)}>Get Game Results</Link>
               </li>
             </ul>
           </nav>
           <Switch>
-            <Route path="/dashboard/game_edit">
-              <GameEdit input={gameData[i].id}/>
+            <Route path='/dashboard/game_edit'>
+              <Modal input={editInput} show={show} onClose={() => setShow(false)}/>
             </Route>
-            <Route path="/dashboard/game_results">
-              <GameResults input={gameData[i].id}/>
+            <Route path={gameResultsPath}>
+              <Modal input={resultsInput} show={show} onClose={() => setShow(false)}/>
             </Route>
           </Switch>
         </div>
       </Router>
     </>)
   }
-
-  console.log(gameThumbnails);
 
   return <>
     <div>

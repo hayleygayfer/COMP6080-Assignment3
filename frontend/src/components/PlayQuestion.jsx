@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import '../App.css'
 import API from '../api.js';
-const api = new API('http://localhost:5000');
+const api = new API('http://localhost:5005');
 
 /* STUB */
 function PlayQuestion () {
@@ -56,7 +56,8 @@ function PlayQuestion () {
         history.push('/play_join');
       } else throw request.status
     } catch (error) {
-      alert(`Invalid: ${error}`);
+      alert(`Invalid Update Answer Request: ${error}`);
+      console.log(error);
     }
   }
 
@@ -70,7 +71,8 @@ function PlayQuestion () {
         history.push('/play_join');
       } else throw request.status
     } catch (error) {
-      alert(`Invalid: ${error}`);
+      alert(`Invalid Get Player Answer Request: ${error}`);
+      console.log(error);
     }
     let correct = false;
     if (answerId === correctAnswer) correct = true;

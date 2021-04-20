@@ -3,7 +3,7 @@ import GameThumbnail from '../components/GameThumbnail'
 import '../App.css'
 import { useHistory } from 'react-router-dom';
 import API from '../api.js';
-const api = new API('http://localhost:5000');
+const api = new API('http://localhost:5005');
 
 function Dashboard () {
   const token = localStorage.getItem('token');
@@ -32,7 +32,8 @@ function Dashboard () {
       } else throw request.status
     } catch (error) {
       setNameInput('');
-      alert('Invalid')
+      alert(`Invalid New Quiz Request: ${error}`);
+      console.log(error);
     }
   }
 
@@ -49,7 +50,8 @@ function Dashboard () {
         return false;
       }
     } catch (error) {
-      alert(`Invalid token: ${error}`);
+      alert(`Invalid Game List Request: ${error}`);
+      console.log(error);
       return false;
     }
     return true;
@@ -57,7 +59,6 @@ function Dashboard () {
 
   return (
       <div className='App'>
-        <p>Dashboard is a stub</p>
         {/* Unique routes stubs */}
         <div>
           <input

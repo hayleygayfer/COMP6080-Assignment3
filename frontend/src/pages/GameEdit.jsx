@@ -10,7 +10,7 @@ import AddQuestion from '../components/AddQuestion';
 import PropTypes from 'prop-types';
 import '../App.css'
 import API from '../api.js';
-const api = new API('http://localhost:5000');
+const api = new API('http://localhost:5005');
 
 function GameEdit (id) {
   const token = localStorage.getItem('token');
@@ -20,50 +20,64 @@ function GameEdit (id) {
   const getGameQuestionsRequest = async (quizId) => {
     try {
       const request = await api.makeAPIRequest(`admin/quiz/${quizId}`, token, 'GET', '', '');
-      if (request.status === 200) {
+      if (request) {
         console.log('Got Game Questions');
-        const data = await request.json();
-        setGameQuestions(data.questions);
-      } else throw request.status
+        setGameQuestions(request.questions);
+      } else {
+        return;
+      }
     } catch (error) {
-      alert('Invalid')
+      alert(`Invalid Question Request: ${error}`);
+      console.log(error);
     }
   }
 
-  getGameQuestionsRequest(gameId);
-  const questionList = [];
-
-  for (let i = 0; i < gameQuestions.length; i++) {
-    const inputs = {
-      gameId: gameQuestions[i].id,
-      questionId: i
+  let questionList = [];
+  const displayQuestions = (gameId) => {
+    if (!questionList === []) {
+      questionList = [];
+      return;
     }
-    questionList.push(<>
-      <Router>
-        <div>
-          {gameQuestions[i].questionString}
-          Question Type: {gameQuestions[i].questionType}
-          Time limit: {gameQuestions[i].timeLimit}
-          Point Value: {gameQuestions[i].pointValue}
-          <img src={gameQuestions[i].imgsrc} />
-          Answers: {gameQuestions[i].answers}
-          <nav>
-            <ul>
-              {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
-              <li>
-                <Link to="/dashboard/game_edit/question">Edit Game Question</Link>
-              </li>
-            </ul>
-          </nav>
-        <Switch>
-          <Route path="/dashboard/game_edit/question">
-            <QuestionEdit input={inputs}/>
-          </Route>
-        </Switch>
-        </div>
-      </Router>
-    </>);
+
+    getGameQuestionsRequest(gameId);
+
+    if (!gameQuestions) return;
+
+    for (let i = 0; i < gameQuestions.length; i++) {
+      const questionPath = `/dashboard/game_edit/question?gameId=${gameId}&questionId=${i}`;
+      const inputs = {
+        gameId: gameId,
+        questionId: i
+      }
+      questionList.push(<>
+        <Router>
+          <div>
+            {gameQuestions[i].questionString}
+            Question Type: {gameQuestions[i].questionType}
+            Time limit: {gameQuestions[i].timeLimit}
+            Point Value: {gameQuestions[i].pointValue}
+            <img src={gameQuestions[i].imgsrc} />
+            Answers: {gameQuestions[i].answers}
+            <nav>
+              <ul>
+                {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
+                <li>
+                  <Link to={questionPath}>Edit Game Question</Link>
+                </li>
+              </ul>
+            </nav>
+          <Switch>
+            <Route path={questionPath}>
+              <QuestionEdit input={inputs}/>
+            </Route>
+          </Switch>
+          </div>
+        </Router>
+      </>);
+    }
   }
+
+  const gamePath = `/dashboard/game_edit/question?=gameId${gameId}`;
 
   return (<>
     <Router>
@@ -72,17 +86,18 @@ function GameEdit (id) {
           <ul>
             {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
             <li>
-              <Link to="/dashboard/game_edit/question">Add Question</Link>
+              <Link to={gamePath}>Add Question</Link>
             </li>
           </ul>
         </nav>
         <Switch>
-          <Route path="/dashboard/game_edit/question">
+          <Route path={gamePath}>
             <AddQuestion input={gameId}/>
           </Route>
         </Switch>
       </div>
     </Router>
+    <button className='button' onClick={displayQuestions(gameId)}> Show Quiz Questions </button>
     <div>
       {questionList}
     </div>
