@@ -12,6 +12,7 @@ function Login () {
   const history = useHistory();
   const loginRequest = async () => {
     try {
+      console.log('login request...')
       const request = await api.makeAPIRequest('admin/auth/login', '', 'POST', '', {
         email: emailInput,
         password: passwordInput,
