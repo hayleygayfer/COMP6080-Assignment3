@@ -24,6 +24,7 @@ function GameEdit (id) {
       const request = await api.makeAPIRequest(`admin/quiz/${quizId}`, token, 'GET', '', '');
       if (request) {
         console.log('Got Game Questions');
+        console.log(request.questions)
         setGameQuestions(request.questions);
         console.log(request.questions);
       }
@@ -40,7 +41,6 @@ function GameEdit (id) {
       questionList = [];
       return;
     }
-
     getGameQuestionsRequest(gameId);
 
     if (!gameQuestions) {
@@ -89,6 +89,20 @@ function GameEdit (id) {
     content: <AddQuestion input={gameId}/>
   }
 
+  const displayQuestionsEverySecond = (gameId) => {
+    const [seconds, setSeconds] = React.useState(0);
+
+    React.useEffect(() => {
+      const interval = setInterval(() => {
+        setSeconds(seconds => seconds + 1);
+        console.log(seconds)
+        // do action every second
+        displayQuestions(gameId)
+      }, 1000);
+      return () => clearInterval(interval);
+    }, []);
+  }
+
   return (<>
     <Router>
       <div>
@@ -102,7 +116,7 @@ function GameEdit (id) {
         </Switch>
       </div>
     </Router>
-    <button className='button' onClick={displayQuestions(gameId)}> Show Quiz Questions </button>
+    <button className='button' onClick={displayQuestionsEverySecond(gameId)}> Show Quiz Questions </button>
     <div>
       {questionList}
     </div>
