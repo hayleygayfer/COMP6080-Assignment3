@@ -1,0 +1,50 @@
+/*
+import { shallow } from 'enzyme'
+import React from 'react';
+import renderer from 'react-test-renderer'
+import { Login } from '../pages/Login';
+
+// properties of the login button...
+describe('Login', ()=> {
+
+    // no operation function
+    const noop = () => {};
+    // run with `yarn test`
+
+    // TODO find button within login
+    it('renders 1 button', () => {
+        const wrapper = shallow(<Login />)
+        expect(
+            wrapper.find('button').text()
+        ).toEqual('Submit')
+        //expect(wrapper.find('button')).to.have.lengthOf(1);
+    })
+
+    it('triggers onClick event handler when clicked'), () => {
+        const onClick = jest.fn();
+        shallow(<Login onClick={onClick}/>).simulate('click');
+        expect(onClick).toHaveBeenCalledTimes(1);
+    }
+    // wrapper.find('Button').prop('onClick')()
+    <div className='loginOrRegister'>
+      <h2> Login </h2>
+      <div>
+        Email:
+        <input
+          type="text"
+          onChange={e => setEmailInput(e.target.value)}
+          value={emailInput}
+        />
+      </div>
+      <div>
+        Password:
+        <input
+          type="password"
+          onChange={e => setPasswordInput(e.target.value)}
+          value={passwordInput}
+        />
+      </div>
+      <button className='button' onClick={loginRequest}> Login </button>
+    </div>
+})
+*/
