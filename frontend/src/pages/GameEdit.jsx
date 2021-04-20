@@ -32,6 +32,7 @@ function GameEdit (id) {
       console.log(error);
     }
   }
+  // quick change
 
   let questionList = [];
   const displayQuestions = (gameId) => {
