@@ -2,7 +2,6 @@ import React from 'react';
 import '../App.css'
 
 function Modal (modalInput) {
-  console.log('anything happening?');
   if (!modalInput.show) {
     return null;
   }

@@ -29,7 +29,7 @@ function AddQuestion (id) {
   let questionEditor = [];
   const openQuestionEditor = (gameId) => {
     getGameQuestionsRequest(gameId);
-    questionEditor.push(<>
+    const editor = <>
       <div>
         Question: <input
           type="text"
@@ -52,8 +52,9 @@ function AddQuestion (id) {
           value={questionMedia}
         /><br/>
       </div>
-      <button className='button' onClick={addGameQuestionsRequest(gameId)}> Submit Question </button>
-    </>)
+      <button className='button' onClick={() => addGameQuestionsRequest(gameId)}> Submit Question </button>
+    </>
+    return editor;
   }
 
   const newQuestion = {
@@ -81,7 +82,10 @@ function AddQuestion (id) {
   }
 
   return (<>
-    <button className='button' onClick={openQuestionEditor(gameId)}> Open Editor </button>
+    <button className='button' onClick={function () {
+      const editor = openQuestionEditor(gameId);
+      questionEditor.push(editor);
+    } }> Open Editor </button>
     {questionEditor}
   </>);
 }
