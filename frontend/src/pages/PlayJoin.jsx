@@ -37,26 +37,28 @@ function PlayJoin () {
   if (playId !== '') joined = true;
 
   const joinGameCard = (<>
-    <h2>Join Game Session</h2>
-    <div>
+    <div className='App'>
+      <h2>Join Game Session</h2>
       <div>
-        Session ID:
-        <input
-          type="text"
-          onChange={e => setSessionInput(e.target.value)}
-          value={sessionInput}
-        />
+        <div>
+          Session ID:
+          <input
+            type="text"
+            onChange={e => setSessionInput(e.target.value)}
+            value={sessionInput}
+          />
+        </div>
+        <div>
+          Name:
+          <input
+            type="text"
+            onChange={e => setNameInput(e.target.value)}
+            value={nameInput}
+          />
+        </div>
       </div>
-      <div>
-        Name:
-        <input
-          type="text"
-          onChange={e => setNameInput(e.target.value)}
-          value={nameInput}
-        />
-      </div>
+      <button className='button smallButton' onClick={joinGameRequest}> Join </button>
     </div>
-    <button onClick={joinGameRequest}> Join </button>
   </>)
 
   return <>

@@ -43,7 +43,7 @@ function Register () {
   const [nameInput, setNameInput] = React.useState('');
 
   return <>
-    <div className='loginOrRegister'>
+    <div className='center-card'>
       <h2> Register </h2>
       <div>
         Email:

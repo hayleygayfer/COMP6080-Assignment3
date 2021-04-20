@@ -17,6 +17,10 @@ function Dashboard () {
 
   const createGameRequest = async () => {
     try {
+      // if name = '', throw error
+      if (nameInput === '') {
+        throw Error('Name can\'t be empty');
+      }
       const request = await api.makeAPIRequest('admin/quiz/new', token, 'POST', '', {
         name: nameInput,
       });
@@ -61,12 +65,14 @@ function Dashboard () {
       <div className='App'>
         {/* Unique routes stubs */}
         <div>
+          <h2> Create new game? </h2>
+          Game name:
           <input
             type="text"
             onChange={e => setNameInput(e.target.value)}
             value={nameInput}
           />
-          <button className='button' onClick={createGameRequest}> Create New Quiz </button>
+          <button className='button smallButton' onClick={createGameRequest}> Create New Quiz </button>
         </div>
         <button className='button' onClick={gameListRequest}> Display Dash </button>
         <GameThumbnail gameList={gameData} />

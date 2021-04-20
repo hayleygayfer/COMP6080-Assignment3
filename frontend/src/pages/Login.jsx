@@ -37,7 +37,7 @@ function Login () {
   const [emailInput, setEmailInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
   return <>
-    <div className='loginOrRegister'>
+    <div className='center-card'>
       <h2> Login </h2>
       <div>
         Email:
