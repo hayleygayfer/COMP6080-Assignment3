@@ -14,6 +14,13 @@ import API from '../api.js';
 const api = new API('http://localhost:5005');
 
 function Dashboard () {
+  // make dashboard etc visible when logged in.
+  // NOTE - using vanilla JS, not usestate, because function that returns menu is in another file. useState only works for single function
+  if (document.getElementById('login')) document.getElementById('login').className = 'hidden';
+  if (document.getElementById('register')) document.getElementById('register').className = 'hidden';
+  if (document.getElementById('logout')) document.getElementById('logout').className = '';
+  if (document.getElementById('dashboard')) document.getElementById('dashboard').className = '';
+  if (document.getElementById('join-game')) document.getElementById('join-game').className = '';
   const token = localStorage.getItem('token');
   const [gameData, setGameData] = React.useState('');
   const [show, setShow] = React.useState(false);

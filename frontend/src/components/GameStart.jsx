@@ -25,7 +25,6 @@ function GameStart (gameId) {
         alert('Game has already been started!');
       } else throw request.status
     } catch (error) {
-      alert('Couldnt Get Quiz Status: ' + error)
     }
   }
 

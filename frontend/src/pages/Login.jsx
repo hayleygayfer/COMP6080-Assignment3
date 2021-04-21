@@ -4,10 +4,6 @@ import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
-// /////// TODO
-// add pretty CSS to login
-//
-
 function Login () {
   const history = useHistory();
   const loginRequest = async () => {
