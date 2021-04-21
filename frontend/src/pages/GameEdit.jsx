@@ -19,6 +19,9 @@ function GameEdit (id) {
   const gameId = id.input;
   const [show, setShow] = React.useState(false);
   const [game, setGame] = React.useState('');
+  const [questionList, setQuestionList] = React.useState('');
+  const [qId, setQId] = React.useState('');
+  const [questionPath, setQuestionPath] = React.useState('');
 
   const getGameQuestionsRequest = async (quizId) => {
     try {
@@ -34,11 +37,11 @@ function GameEdit (id) {
     }
   }
   // quick change
-
-  let questionList = [];
+  let questions = [];
   const displayQuestions = (gameId) => {
-    if (questionList.length) {
-      questionList = [];
+    if (questions.length) {
+      questions = [];
+      setQuestionList(questions);
       return;
     }
     getGameQuestionsRequest(gameId);
@@ -49,37 +52,19 @@ function GameEdit (id) {
     }
 
     for (let i = 0; i < gameQuestions.length; i++) {
-      const questionPath = `/dashboard/game_edit/question/:${gameId}/:${i}`;
-      const inputs = {
-        gameId: gameId,
-        questionId: i
-      }
-      const modalInput = {
-        title: 'Edit Question',
-        content: <QuestionEdit input={inputs}/>
-      }
-      questionList.push(<>
-        <Router>
-          <div className="question-data">
-            Question: {gameQuestions[i].questionString}<br/>
-            Question Type: {gameQuestions[i].questionType}<br/>
-            Time limit: {gameQuestions[i].timeLimit}<br/>
-            Point Value: {gameQuestions[i].pointValue}<br/>
-            <img src={gameQuestions[i].mediaSource} /><br/>
-            Answers: {gameQuestions[i].answers}<br/>
-            <nav>
-              {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}
-              <Link to={questionPath} onClick={() => setShow(true)}>Edit Game Question</Link>
-            </nav>
-          <Switch>
-            <Route path={questionPath}>
-              <Modal input={modalInput} show={show} onClose={() => setShow(false)}/>
-            </Route>
-          </Switch>
-          </div>
-        </Router>
+      questions.push(<>
+        <div key="div" className="question-data">
+          Question ID: {i}<br/>
+          Question: {gameQuestions[i].questionString}<br/>
+          Question Type: {gameQuestions[i].questionType}<br/>
+          Time limit: {gameQuestions[i].timeLimit}<br/>
+          Point Value: {gameQuestions[i].pointValue}<br/>
+          <img key="image" src={gameQuestions[i].mediaSource} /><br/>
+          Answers: {gameQuestions[i].answers}<br/>
+        </div>
       </>);
     }
+    setQuestionList(questions);
   }
 
   const gamePath = `/dashboard/game_edit/question/:${gameId}`;
@@ -108,6 +93,16 @@ function GameEdit (id) {
     content: <AddQuestion input={addQInput}/>
   }
 
+  const inputs = {
+    gameId: gameId,
+    questionId: qId,
+  }
+
+  const modalInput = {
+    title: 'Edit Question',
+    content: <QuestionEdit input={inputs}/>
+  }
+
   return (<>
     <Router>
       <div>
@@ -115,19 +110,40 @@ function GameEdit (id) {
           <Link to={gamePath} onClick={() => {
             setShow(true);
             displayQuestions(gameId);
-          }
-          }>Add Question</Link>
+          }}>Add Question</Link>
+          <div>
+            Enter Question ID:<input
+              type="text"
+              onChange={e => {
+                setQId(e.target.value);
+                setQuestionPath(`/dashboard/game_edit/question/:${gameId}/:${qId}`)
+              }}
+              value={qId}
+            />
+          </div>
+            <Link to={questionPath} onClick={() => {
+              if (qId >= gameQuestions.length || qId < 0) {
+                alert('Not a valid Question ID')
+              } else {
+                setShow(true);
+              }
+            }}>Edit Question: {qId}</Link>
         </nav>
         <Switch>
           <Route path={gamePath}>
+            {console.log('adding')}
             <Modal input={addInput} show={show} onClose={() => setShow(false)}/>
+          </Route>
+          <Route path={questionPath}>
+            {console.log('editing')}
+            <Modal input={modalInput} show={show} onClose={() => setShow(false)}/>
           </Route>
         </Switch>
       </div>
     </Router>
     <button className='button' onClick={() => displayQuestions(gameId)}> Show Quiz Questions </button>
     <div>
-      {QuestionList}
+      {questionList}
     </div>
   </>);
 }
