@@ -49,8 +49,7 @@ function GameThumbnail (gameList) {
     // (up in above funct)
     // determine whether this quiz has started (aka is active)
     let started = false;
-    if (gameData[i].active === null) started = true
-    console.log(started)
+    if (gameData[i].active !== null) started = true
 
     gameThumbnails.push(<>
       <Router>
@@ -73,7 +72,7 @@ function GameThumbnail (gameList) {
                 //     so: {started ? <start_link/> : <end_link/>}
               }
               <li>
-                {started ? <Link to={gameStartPath} onClick={() => setShow(true)}>Start Game</Link> : <Link to={gameStopPath} onClick={() => setShow(true)}>Stop Game</Link> }
+                {started ? <Link to={gameStopPath} onClick={() => setShow(true)}>Stop Game</Link> : <Link to={gameStartPath} onClick={() => setShow(true)}>Start Game</Link> }
               </li>
             </ul>
           </nav>
@@ -85,7 +84,7 @@ function GameThumbnail (gameList) {
               <Modal input={resultsInput} show={show} onClose={() => setShow(false)}/>
             </Route>
             <Route path={gameStartPath}>
-              <Modal input={startInput} show={show} onClose={() => setShow(false)}/>
+              <Modal input={startInput} show={show} onClose={() => setShow(false) }/>
             </Route>
             <Route path={gameStopPath}>
               <Modal input={stopInput} show={show} onClose={() => setShow(false)}/>
