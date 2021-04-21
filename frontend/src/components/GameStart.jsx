@@ -1,36 +1,52 @@
 import React from 'react';
 import '../App.css'
-// import API from '../api.js';
+import API from '../api.js';
+const api = new API('http://localhost:5005');
 
 function GameStart (gameId) {
-  console.log(gameId.input)
-  const url = window.location.origin + '/play_join?game_id=' + gameId.input
-  /*
-  const api = new API('http://localhost:5005');
+  // const url = `${window.location.origin}/play_join?game_id=${gameId.input}`;
+  const token = localStorage.getItem('token');
+  const [sessionId, setSessionId] = React.useState('');
+
   const startRequest = async () => {
     try {
       // insert token
-      const token = localStorage.getItem('token');
       console.log('domain  ' + '/admin/session/' + gameId.input + '/status')
-      const request = await api.makeAPIRequest('admin/quiz/' + gameId.input + '/start', token, 'POST', '', '')
+      const request = await api.makeAPIRequest(`admin/quiz/${gameId.input}/start`, token, 'POST', '', '')
       console.log(request)
       if (request.status === 200) {
         console.log('Successful Get Quiz Status');
         const data = await request.json();
         console.log('Quiz status data:')
         console.log(data)
+        alert('Game Started!')
+        getSessionIdRequest();
+      } else if (request.status === 400) {
+        alert('Game has already been started!');
       } else throw request.status
     } catch (error) {
       alert('Couldnt Get Quiz Status: ' + error)
     }
   }
-  startRequest()
-  */
+
+  const getSessionIdRequest = async () => {
+    try {
+      const request = await api.makeAPIRequest(`admin/quiz/${gameId.input}`, token, 'GET', '', '')
+      console.log(request)
+      if (request) {
+        setSessionId(request.active);
+      }
+    } catch (error) {
+      alert(`Couldnt Get Quiz Session: ${error}`);
+    }
+  }
+
   return <>
-    <p>Game Id: {gameId.input}</p>
+    <button className='button' onClick={() => startRequest()}> Start Game </button>
+    <p>Session Id: {sessionId}</p>
     { // LINK TO 'COPY GAME URL' .. which will be /play_join:{gameId.input}
     }
-    <button className='button smallButton' onClick={ () => { navigator.clipboard.writeText(url) } }> Copy Link </button>
+    <button className='button smallButton' onClick={ () => { navigator.clipboard.writeText(sessionId) } }> Copy Session Id </button>
   </>;
 }
 

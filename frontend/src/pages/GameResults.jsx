@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css'
 import API from '../api.js';
 import { Chart } from 'react-charts'
-const api = new API('http://localhost:5000');
+const api = new API('http://localhost:5005');
 
 function GameResults (gId) {
   const token = localStorage.getItem('token');

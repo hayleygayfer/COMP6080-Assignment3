@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import Modal from '../components/Modal'
 import '../App.css'
 import API from '../api.js';
-const api = new API('http://localhost:5000');
+const api = new API('http://localhost:5005');
 
 function GameEdit (id) {
   const token = localStorage.getItem('token');
