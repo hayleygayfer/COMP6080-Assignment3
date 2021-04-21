@@ -11,13 +11,14 @@ import PropTypes from 'prop-types';
 import Modal from '../components/Modal'
 import '../App.css'
 import API from '../api.js';
-const api = new API('http://localhost:5005');
+const api = new API('http://localhost:5000');
 
 function GameEdit (id) {
   const token = localStorage.getItem('token');
   const [gameQuestions, setGameQuestions] = React.useState('');
   const gameId = id.input;
   const [show, setShow] = React.useState(false);
+  const [game, setGame] = React.useState('');
 
   const getGameQuestionsRequest = async (quizId) => {
     try {
@@ -25,6 +26,7 @@ function GameEdit (id) {
       if (request) {
         console.log('Got Game Questions');
         setGameQuestions(request.questions);
+        setGame(request);
       }
     } catch (error) {
       alert(`Invalid Question Request: ${error}`);
@@ -82,11 +84,6 @@ function GameEdit (id) {
 
   const gamePath = `/dashboard/game_edit/question/:${gameId}`;
 
-  const addInput = {
-    title: 'Add Question',
-    content: <AddQuestion input={gameId}/>
-  }
-
   /* const displayQuestionsEverySecond = (gameId) => {
     const [seconds, setSeconds] = React.useState(0);
 
@@ -101,11 +98,25 @@ function GameEdit (id) {
     }, []);
   } */
 
+  const addQInput = {
+    game: game,
+    id: gameId
+  }
+
+  const addInput = {
+    title: 'Add Question',
+    content: <AddQuestion input={addQInput}/>
+  }
+
   return (<>
     <Router>
       <div>
         <nav>
-          <Link to={gamePath} onClick={() => setShow(true)}>Add Question</Link>
+          <Link to={gamePath} onClick={() => {
+            setShow(true);
+            displayQuestions(gameId);
+          }
+          }>Add Question</Link>
         </nav>
         <Switch>
           <Route path={gamePath}>
@@ -116,7 +127,7 @@ function GameEdit (id) {
     </Router>
     <button className='button' onClick={() => displayQuestions(gameId)}> Show Quiz Questions </button>
     <div>
-      {questionList}
+      {QuestionList}
     </div>
   </>);
 }

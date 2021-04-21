@@ -3,7 +3,7 @@ import GameThumbnail from '../components/GameThumbnail'
 import '../App.css'
 import { useHistory } from 'react-router-dom';
 import API from '../api.js';
-const api = new API('http://localhost:5005');
+const api = new API('http://localhost:5000');
 
 function Dashboard () {
   const token = localStorage.getItem('token');

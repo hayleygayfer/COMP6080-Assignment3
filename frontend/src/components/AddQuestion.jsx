@@ -55,6 +55,7 @@ export function AddQuestion (data) {
       console.log(request);
       if (request) {
         console.log('Updated Game Data');
+        alert('Question has been Added!')
       }
     } catch (error) {
       alert(`Invalid Update Question Request: ${error}`);
