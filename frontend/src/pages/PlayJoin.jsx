@@ -4,10 +4,10 @@ import PlayQuestion from '../components/PlayQuestion'
 import { useHistory } from 'react-router-dom';
 import '../App.css'
 import API from '../api.js';
-const api = new API('http://localhost:5005');
+const api = new API('http://localhost:5000');
 
 function PlayJoin () {
-  var [sessionInput, setSessionInput] = React.useState('');
+  let [sessionInput, setSessionInput] = React.useState('');
   const [nameInput, setNameInput] = React.useState('');
   const [playId, setPlayId] = React.useState('');
   const history = useHistory();
