@@ -2,6 +2,7 @@ import React from 'react';
 import GameEdit from '../pages/GameEdit'
 import GameResults from '../pages/GameResults'
 import GameStart from './GameStart'
+import GameStop from './GameStop'
 import Modal from './Modal'
 import {
   BrowserRouter as Router,
@@ -27,6 +28,7 @@ function GameThumbnail (gameList) {
     const gameEditPath = `/dashboard/game_edit/:${gameData[i].id}`;
     const gameResultsPath = `/dashboard/game_results/:${gameData[i].id}`;
     const gameStartPath = '/dashboard/game_start/';
+    const gameStopPath = '/dashboard/game_stop/';
     const editInput = {
       title: 'Edit Game',
       content: <GameEdit input={gameData[i].id}/>
@@ -39,6 +41,17 @@ function GameThumbnail (gameList) {
       title: 'Start Game:',
       content: <GameStart input={gameData[i].id}/>
     }
+    const stopInput = {
+      title: 'Stop Game:',
+      content: <GameStop input={gameData[i].id}/>
+    }
+    // get quiz active status using GET /admin/session/{sessionid}/status
+    // (up in above funct)
+    // determine whether this quiz has started (aka is active)
+    let started = false;
+    if (gameData[i].active === null) started = true
+    console.log(started)
+
     gameThumbnails.push(<>
       <Router>
         <div className="game-card" key='game-card'>
@@ -54,8 +67,13 @@ function GameThumbnail (gameList) {
               <li>
                 <Link to={gameResultsPath} onClick={() => setShow(true)}>Get Game Results</Link>
               </li>
+              {
+                // if active: start game link
+                // if not active: stop game link
+                //     so: {started ? <start_link/> : <end_link/>}
+              }
               <li>
-                <Link to={gameStartPath} onClick={() => setShow(true)}>Start Game</Link>
+                {started ? <Link to={gameStartPath} onClick={() => setShow(true)}>Start Game</Link> : <Link to={gameStopPath} onClick={() => setShow(true)}>Stop Game</Link> }
               </li>
             </ul>
           </nav>
@@ -68,6 +86,9 @@ function GameThumbnail (gameList) {
             </Route>
             <Route path={gameStartPath}>
               <Modal input={startInput} show={show} onClose={() => setShow(false)}/>
+            </Route>
+            <Route path={gameStopPath}>
+              <Modal input={stopInput} show={show} onClose={() => setShow(false)}/>
             </Route>
           </Switch>
         </div>

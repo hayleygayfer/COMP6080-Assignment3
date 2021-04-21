@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import PlayJoin from './pages/PlayJoin'
+import GameResults from './pages/GameResults'
 
 import './App.css';
 
@@ -47,6 +48,9 @@ function App () {
           </Route>
           <Route path="/play_join">
             <PlayJoin />
+          </Route>
+          <Route path="/game_results">
+            <GameResults />
           </Route>
         </Switch>
       </div>
