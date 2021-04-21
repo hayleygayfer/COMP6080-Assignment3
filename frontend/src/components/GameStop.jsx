@@ -6,20 +6,23 @@ const api = new API('http://localhost:5005');
 
 function GameStop (gameId) {
   const history = useHistory();
+  localStorage.setItem('gameIdForResults', gameId.input);
   const stopRequest = async () => {
     try {
       // insert token
       console.log('stopping game....')
       const token = localStorage.getItem('token');
-      const request = await api.makeAPIRequest('admin/quiz/' + gameId.input + '/end', token, 'POST', '', '')
+      const request = await api.makeAPIRequest('admin/quiz/' + gameId.input + '/end', token, 'POST', '', '');
       console.log(request)
+      localStorage.setItem('gameIdOfStartedGame', null);
+      localStorage.setItem('sessionIdOfStartedGame', null);
     } catch (error) {
     }
   }
-  stopRequest()
+  stopRequest();
   const showResults = () => {
     console.log(gameId.input)
-    const path = '/game_results?game_id=' + gameId.input
+    const path = `/game_results/:game_id=${gameId.input}`
     // GETS THE RIGHT URL... BUT DOESN'T REFRESH
     history.push(path)
     window.location.reload();

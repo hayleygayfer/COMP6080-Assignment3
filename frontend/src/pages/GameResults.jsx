@@ -4,11 +4,14 @@ import API from '../api.js';
 import { Chart } from 'react-charts'
 const api = new API('http://localhost:5005');
 
-function GameResults (gId) {
+function GameResults () {
   const token = localStorage.getItem('token');
-  const gameId = gId.input;
+  const gameId = localStorage.getItem('gameIdForResults');
+  const sessionId = localStorage.getItem('sessionIdForResults');
 
-  const getResultsRequest = async () => {
+  console.log(gameId);
+
+  /* const getResultsRequest = async () => {
     try {
       const request = await api.makeAPIRequest(`admin/quiz/${gameId}`, token, 'GET', '', '');
       if (request) {
@@ -19,11 +22,11 @@ function GameResults (gId) {
       alert(`Invalid Question Request: ${error}`);
       console.log(error);
     }
-  }
+  } */
 
   const getSessionRequest = async (sessionId) => {
     try {
-      const request = await api.makeAPIRequest(`admin/quiz/${sessionId}/results`, token, 'GET', '', '');
+      const request = await api.makeAPIRequest(`admin/session/${sessionId}/results`, token, 'GET', '', '');
       if (request) {
         console.log('Got Session Data');
         return request;
@@ -35,6 +38,7 @@ function GameResults (gId) {
   }
 
   const calculateTopFive = (results) => {
+    if (!results.answers) return 1;
     const topScores = [];
     topScores.push({
       name: 'dummy',
@@ -58,6 +62,7 @@ function GameResults (gId) {
   }
 
   const questionStats = (results) => {
+    if (!results.answers) return 1;
     const answers = [];
     for (let i = 0; i < results.answers.length; i++) {
       answers.push({ question: i, correct: 0, responseTime: 0 });
@@ -78,27 +83,29 @@ function GameResults (gId) {
 
   const displayResultsData = () => {
     const displayData = [];
-    getResultsRequest().then((results) => {
-      for (let i = 0; i < results.oldSessions.length; i++) {
-        const sessionData = getSessionRequest(results.oldSessions[i]);
-
-        const topFive = calculateTopFive(sessionData);
-        const questionData = questionStats(sessionData);
-
-        const topDisplay = [];
-        for (let i = 0; i < topFive.length; i++) {
-          topDisplay.push(<>
-            {topFive[i].name} : {topFive[i].score}
-          </>)
-        }
-
-        displayData.push(<>
-          {topDisplay}
-          {convertToChart(questionData)}
-        </>);
+    getSessionRequest(sessionId).then((sessionData) => {
+      console.log(sessionData);
+      if (sessionData.length === 0) {
+        return (<p>There are no results for this quiz!</p>);
       }
+
+      const topFive = calculateTopFive(sessionData);
+      const questionData = questionStats(sessionData);
+
+      const topDisplay = [];
+      for (let i = 0; i < topFive.length; i++) {
+        topDisplay.push(<>
+          {topFive[i].name} : {topFive[i].score}
+        </>)
+      }
+
+      displayData.push(<>
+        {topDisplay}
+        {convertToChart(questionData)}
+      </>);
+
+      return displayData;
     });
-    return displayData;
   }
 
   const convertToChart = (qData) => {

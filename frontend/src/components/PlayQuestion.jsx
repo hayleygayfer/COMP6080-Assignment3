@@ -19,9 +19,9 @@ function PlayQuestion () {
   const getQuestionRequest = async () => {
     try {
       const request = await api.makeAPIRequest(`play/${playID}/question`, '', 'GET', '', '');
-      if (request.status === 200) {
+      if (request) {
         console.log('Got Question');
-        const data = await request.json();
+        const data = request;
         console.log(data);
         console.log(data.quizQuestionPublicReturn);
         setQuestionData(data.quizQuestionPublicReturn);
@@ -37,7 +37,7 @@ function PlayQuestion () {
           </>)
         }
         history.push('/play_join');
-      } else throw request.status
+      }
     } catch (error) {
       alert(`Invalid: ${error}`);
     }
@@ -50,11 +50,11 @@ function PlayQuestion () {
       const request = await api.makeAPIRequest(`play/${playID}/answer`, '', 'PUT', '', {
         answerIds: answerIdlist,
       });
-      if (request.status === 200) {
+      if (request) {
         console.log('Sent Answer');
         setAnswerId(answerId);
         history.push('/play_join');
-      } else throw request.status
+      }
     } catch (error) {
       alert(`Invalid Update Answer Request: ${error}`);
       console.log(error);
@@ -64,12 +64,12 @@ function PlayQuestion () {
   const getQuestionResultsRequest = async () => {
     try {
       const request = await api.makeAPIRequest(`play/${playID}/answer`, '', 'GET', '', '');
-      if (request.status === 200) {
+      if (request) {
         console.log('Got Correct Answer');
-        const data = await request.json();
+        const data = request;
         setCorrectAnswer(data.answerIds[0])
         history.push('/play_join');
-      } else throw request.status
+      }
     } catch (error) {
       alert(`Invalid Get Player Answer Request: ${error}`);
       console.log(error);
@@ -124,10 +124,10 @@ function PlayQuestion () {
 
   return <>
     <div>
-      Question: {questionData.questionString}
-      <img src={questionData.mediaSource} />
-      Time Left: {timerComponents.length ? timerComponents : getQuestionResultsRequest}
-      Answers: {answersList}
+      Question: {questionData.questionString}<br/>
+      <img src={questionData.mediaSource} /><br/>
+      Time Left: {timerComponents.length ? timerComponents : getQuestionResultsRequest}<br/>
+      Answers: {answersList}<br/>
     </div>
   </>
 }
