@@ -7,11 +7,17 @@ import API from '../api.js';
 const api = new API('http://localhost:5005');
 
 function PlayJoin () {
-  const [sessionInput, setSessionInput] = React.useState('');
+  var [sessionInput, setSessionInput] = React.useState('');
   const [nameInput, setNameInput] = React.useState('');
   const [playId, setPlayId] = React.useState('');
-
   const history = useHistory();
+  // if query in the url... add it to gameId input
+  if (window.location.search) {
+    const gameId = window.location.search.replace('?game_id=', '')
+    console.log(gameId)
+    // setState rerenders the app, causing infinite loop, so change sessionInput manually in this case
+    sessionInput = gameId;
+  }
   const joinGameRequest = async () => {
     console.log(sessionInput);
     try {
@@ -35,7 +41,6 @@ function PlayJoin () {
 
   let joined = false;
   if (playId !== '') joined = true;
-
   const joinGameCard = (<>
     <div className='App'>
       <h2>Join Game Session</h2>

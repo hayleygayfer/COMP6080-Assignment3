@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddQuestion renders correctly when click happens (snapshot) 1`] = `
+<button
+  className="button"
+  onClick={[Function]}
+>
+   Open Editor 
+</button>
+`;
+
+exports[`AddQuestion renders correctly when no click (snapshot) 1`] = `
+<button
+  className="button"
+  onClick={[Function]}
+>
+   Open Editor 
+</button>
+`;
