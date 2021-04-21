@@ -1,6 +1,7 @@
 import React from 'react';
 import GameEdit from '../pages/GameEdit'
 import GameResults from '../pages/GameResults'
+import GameStart from './GameStart'
 import Modal from './Modal'
 import {
   BrowserRouter as Router,
@@ -25,6 +26,7 @@ function GameThumbnail (gameList) {
   for (let i = 0; i < gameData.length; i++) {
     const gameEditPath = `/dashboard/game_edit/:${gameData[i].id}`;
     const gameResultsPath = `/dashboard/game_results/:${gameData[i].id}`;
+    const gameStartPath = '/dashboard/game_start/';
     const editInput = {
       title: 'Edit Game',
       content: <GameEdit input={gameData[i].id}/>
@@ -32,6 +34,10 @@ function GameThumbnail (gameList) {
     const resultsInput = {
       title: 'Results',
       content: <GameResults input={gameData[i].id}/>
+    }
+    const startInput = {
+      title: 'Start Game:',
+      content: <GameStart input={gameData[i].id}/>
     }
     gameThumbnails.push(<>
       <Router>
@@ -48,6 +54,9 @@ function GameThumbnail (gameList) {
               <li>
                 <Link to={gameResultsPath} onClick={() => setShow(true)}>Get Game Results</Link>
               </li>
+              <li>
+                <Link to={gameStartPath} onClick={() => setShow(true)}>Start Game</Link>
+              </li>
             </ul>
           </nav>
           <Switch>
@@ -56,6 +65,9 @@ function GameThumbnail (gameList) {
             </Route>
             <Route path={gameResultsPath}>
               <Modal input={resultsInput} show={show} onClose={() => setShow(false)}/>
+            </Route>
+            <Route path={gameStartPath}>
+              <Modal input={startInput} show={show} onClose={() => setShow(false)}/>
             </Route>
           </Switch>
         </div>
