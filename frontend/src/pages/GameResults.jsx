@@ -1,16 +1,18 @@
 import React from 'react';
 import '../App.css'
 import API from '../api.js';
+import { Chart } from 'react-charts'
 const api = new API('http://localhost:5000');
 
-function GameResults (gameId) {
+function GameResults (sId) {
   const token = localStorage.getItem('token');
   const [gameResults, setGameResults] = React.useState('');
   const [resultsDisplay, setResultsDisplay] = React.useState('');
+  const sessionId = sId.input;
 
   const getResultsRequest = async () => {
     try {
-      const request = await api.makeAPIRequest(`admin/quiz/${gameId}/results`, token, 'GET', '', '');
+      const request = await api.makeAPIRequest(`admin/quiz/${sessionId}/results`, token, 'GET', '', '');
       if (request) {
         console.log('Got Game Questions');
         setGameResults(request);
@@ -81,17 +83,55 @@ function GameResults (gameId) {
       </>)
     }
 
-    const dataDisplay = [];
-    for (let j = 0; j < questionData.length; j++) {
-      dataDisplay.push(<>
-        Question: {questionData[j].question} | Correct: {questionData[j].correct}% | Avg Response Time: {questionData[j].responseTime}
-      </>)
-    }
     setResultsDisplay(<>
-      Results:
-      {topDisplay}<br/>
-      {dataDisplay}<br/>
-    </>)
+      {topDisplay}
+      {convertToChart(questionData)}
+    </>);
+  }
+
+  const convertToChart = (qData) => {
+    const dataSpreadCorrect = [];
+    const dataSpreadResponse = [];
+    for (let i = 0; i < qData.length; i++) {
+      dataSpreadCorrect.push([i, qData[i].correct])
+      dataSpreadResponse.push([i, qData[i].responseTime])
+    }
+
+    const data = React.useMemo(
+      () => [
+        {
+          label: 'Series 1',
+          data: dataSpreadCorrect
+        },
+        {
+          label: 'Series 2',
+          data: dataSpreadResponse
+        },
+      ],
+      []
+    )
+
+    const axes = React.useMemo(
+      () => [
+        { primary: true, type: 'linear', position: 'bottom' },
+        { type: 'linear', position: 'left' }
+      ],
+      []
+    )
+
+    const lineChart = (
+      // A react-chart hyper-responsively and continuously fills the available
+      // space of its parent element automatically
+      <div
+        style={{
+          width: '400px',
+          height: '300px'
+        }}
+      >
+        <Chart data={data} axes={axes} />
+      </div>
+    )
+    return lineChart;
   }
 
   return (<>

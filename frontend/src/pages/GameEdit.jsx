@@ -123,7 +123,7 @@ function GameEdit (id) {
           </div>
             <Link to={questionPath} onClick={() => {
               if (qId >= gameQuestions.length || qId < 0) {
-                alert('Not a valid Question ID')
+                alert('Not a valid Question ID');
               } else {
                 setShow(true);
               }
