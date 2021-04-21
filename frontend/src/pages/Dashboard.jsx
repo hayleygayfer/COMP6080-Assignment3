@@ -1,45 +1,25 @@
 import React from 'react';
-import GameThumbnail from '../components/GameThumbnail'
+import GameThumbnail from '../components/GameThumbnail';
+import CreateGame from '../components/CreateGame';
+import Modal from '../components/Modal';
 import '../App.css'
-import { useHistory } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory
+} from 'react-router-dom';
 import API from '../api.js';
 const api = new API('http://localhost:5000');
 
 function Dashboard () {
   const token = localStorage.getItem('token');
+  const [gameData, setGameData] = React.useState('');
+  const [show, setShow] = React.useState(false);
   console.log(token);
 
   const history = useHistory();
-
-  const [gameData, setGameData] = React.useState('');
-  const [newQuizId, setNewQuizId] = React.useState('');
-  const [nameInput, setNameInput] = React.useState('');
-
-  const createGameRequest = async () => {
-    try {
-      // if name = '', throw error
-      if (nameInput === '') {
-        throw Error('Name can\'t be empty');
-      }
-      const request = await api.makeAPIRequest('admin/quiz/new', token, 'POST', '', {
-        name: nameInput,
-      });
-      if (request.status === 200) {
-        console.log('Game Created');
-        // send them to dashboard
-        const data = await request.json();
-        history.push('/dashboard');
-        setNewQuizId(data.quizId);
-        alert(`Game Created! id: ${newQuizId}`);
-        setNameInput('');
-        console.log(newQuizId);
-      } else throw request.status
-    } catch (error) {
-      setNameInput('');
-      alert(`Invalid New Quiz Request: ${error}`);
-      console.log(error);
-    }
-  }
 
   const gameListRequest = async () => {
     try {
@@ -61,22 +41,24 @@ function Dashboard () {
     return true;
   }
 
+  const createInput = {
+    title: 'Create Game',
+    content: <CreateGame />
+  }
+
   return (
+    <Router>
       <div className='App'>
-        {/* Unique routes stubs */}
-        <div>
-          <h2> Create new game? </h2>
-          Game name:
-          <input
-            type="text"
-            onChange={e => setNameInput(e.target.value)}
-            value={nameInput}
-          />
-          <button className='button smallButton' onClick={createGameRequest}> Create New Quiz </button>
-        </div>
+        <Link to="/dashboard" onClick={() => setShow(true)}> Create New Game </Link>
         <button className='button' onClick={gameListRequest}> Display Dash </button>
         <GameThumbnail gameList={gameData} />
       </div>
+      <Switch>
+        <Route path="/dashboard">
+          <Modal input={createInput} show={show} onClose={() => setShow(false)}/>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

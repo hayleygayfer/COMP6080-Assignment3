@@ -4,18 +4,29 @@ import API from '../api.js';
 import { Chart } from 'react-charts'
 const api = new API('http://localhost:5000');
 
-function GameResults (sId) {
+function GameResults (gId) {
   const token = localStorage.getItem('token');
-  const [gameResults, setGameResults] = React.useState('');
-  const [resultsDisplay, setResultsDisplay] = React.useState('');
-  const sessionId = sId.input;
+  const gameId = gId.input;
 
   const getResultsRequest = async () => {
     try {
+      const request = await api.makeAPIRequest(`admin/quiz/${gameId}`, token, 'GET', '', '');
+      if (request) {
+        console.log('got Game Data');
+        return request;
+      }
+    } catch (error) {
+      alert(`Invalid Question Request: ${error}`);
+      console.log(error);
+    }
+  }
+
+  const getSessionRequest = async (sessionId) => {
+    try {
       const request = await api.makeAPIRequest(`admin/quiz/${sessionId}/results`, token, 'GET', '', '');
       if (request) {
-        console.log('Got Game Questions');
-        setGameResults(request);
+        console.log('Got Session Data');
+        return request;
       }
     } catch (error) {
       alert(`Invalid Question Request: ${error}`);
@@ -66,27 +77,28 @@ function GameResults (sId) {
   }
 
   const displayResultsData = () => {
-    getResultsRequest();
+    const displayData = [];
+    getResultsRequest().then((results) => {
+      for (let i = 0; i < results.oldSessions.length; i++) {
+        const sessionData = getSessionRequest(results.oldSessions[i]);
 
-    if (!gameResults) {
-      alert('No results available for this game');
-      return 1;
-    }
+        const topFive = calculateTopFive(sessionData);
+        const questionData = questionStats(sessionData);
 
-    const topFive = calculateTopFive(gameResults);
-    const questionData = questionStats(gameResults);
+        const topDisplay = [];
+        for (let i = 0; i < topFive.length; i++) {
+          topDisplay.push(<>
+            {topFive[i].name} : {topFive[i].score}
+          </>)
+        }
 
-    const topDisplay = [];
-    for (let i = 0; i < topFive.length; i++) {
-      topDisplay.push(<>
-        {topFive[i].name} : {topFive[i].score}
-      </>)
-    }
-
-    setResultsDisplay(<>
-      {topDisplay}
-      {convertToChart(questionData)}
-    </>);
+        displayData.push(<>
+          {topDisplay}
+          {convertToChart(questionData)}
+        </>);
+      }
+    });
+    return displayData;
   }
 
   const convertToChart = (qData) => {
@@ -136,7 +148,6 @@ function GameResults (sId) {
 
   return (<>
     <button className='button' onClick={() => displayResultsData()}> Get Results </button>
-    {resultsDisplay}
   </>);
 }
 

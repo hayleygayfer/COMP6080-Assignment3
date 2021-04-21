@@ -106,29 +106,27 @@ function GameEdit (id) {
   return (<>
     <Router>
       <div>
-        <nav>
-          <Link to={gamePath} onClick={() => {
+        <Link to={gamePath} onClick={() => {
+          setShow(true);
+          displayQuestions(gameId);
+        }}>Add Question</Link>
+        <div>
+          Enter Question ID:<input
+            type="text"
+            onChange={e => {
+              setQId(e.target.value);
+              setQuestionPath(`/dashboard/game_edit/question/:${gameId}/:${qId}`)
+            }}
+            value={qId}
+          />
+        </div>
+        <Link to={questionPath} onClick={() => {
+          if (qId >= gameQuestions.length || qId < 0) {
+            alert('Not a valid Question ID');
+          } else {
             setShow(true);
-            displayQuestions(gameId);
-          }}>Add Question</Link>
-          <div>
-            Enter Question ID:<input
-              type="text"
-              onChange={e => {
-                setQId(e.target.value);
-                setQuestionPath(`/dashboard/game_edit/question/:${gameId}/:${qId}`)
-              }}
-              value={qId}
-            />
-          </div>
-            <Link to={questionPath} onClick={() => {
-              if (qId >= gameQuestions.length || qId < 0) {
-                alert('Not a valid Question ID');
-              } else {
-                setShow(true);
-              }
-            }}>Edit Question: {qId}</Link>
-        </nav>
+          }
+        }}>Edit Question: {qId}</Link>
         <Switch>
           <Route path={gamePath}>
             {console.log('adding')}
