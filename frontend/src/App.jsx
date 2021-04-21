@@ -9,10 +9,10 @@ import {
 // Import pages
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
+import Logout from './pages/Logout'
 import Register from './pages/Register'
 import PlayJoin from './pages/PlayJoin'
 import GameResults from './pages/GameResults'
-
 import './App.css';
 
 function App () {
@@ -23,16 +23,19 @@ function App () {
         <nav className='navBar'>
           <ul className='App-link'>
             <li>
-              <Link to="/login">Login</Link>
+              <Link id='login' to="/login">Login</Link>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              <Link id='register' to="/register">Register</Link>
             </li>
-            <li>
+            <li id='dashboard' className='hidden'>
               <Link to="/dashboard">Dashboard</Link>
             </li>
-            <li>
+            <li id='join-game' className='hidden'>
               <Link to="/play_join">Join Game</Link>
+            </li>
+            <li id='logout' className='hidden'>
+              <Link to="/log_out">Logout</Link>
             </li>
           </ul>
         </nav>
@@ -51,6 +54,12 @@ function App () {
           </Route>
           <Route path="/game_results">
             <GameResults />
+          </Route>
+          <Route path="/log_out">
+            <Logout />
+          </Route>
+          <Route path="/">
+            <Login />
           </Route>
         </Switch>
       </div>

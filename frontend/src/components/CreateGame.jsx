@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 import API from '../api.js';
-const api = new API('http://localhost:5000');
+const api = new API('http://localhost:5005');
 
 function CreateGame () {
   const [nameInput, setNameInput] = React.useState('');

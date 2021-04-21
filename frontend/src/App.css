@@ -46,6 +46,10 @@ ul {
   }
 }
 
+.hidden {
+  display: none;
+}
+
 .center-card {
   text-align: center; 
   background-color: #ffffff;
