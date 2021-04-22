@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 function GameInfo (props) {
   return <>
   Title: {props.title}<br/>
-  Thumbnail: {props.thumbnail ? <img src={props.thumbnail}> </img> : 'none provided' } <br/>
+  Thumbnail: {props.thumbnail ? <img src={props.thumbnail} alt={'Thumbnail for game: ' + props.title}> </img> : 'none provided' } <br/>
   </>
 }
 export default GameInfo;

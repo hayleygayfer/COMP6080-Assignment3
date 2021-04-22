@@ -73,7 +73,7 @@ ul {
 }
 
 .button {
-  background-color: #cccccc;
+  background-color: #666666;
   color: rgb(255, 255, 255);
   box-shadow: none;
   cursor: not-allowed;
@@ -90,7 +90,7 @@ ul {
 }
 
 .button:hover {
-  background-color: rgb(158, 158, 158);
+  background-color: #1f1e1e;
 }
 
 .modal {

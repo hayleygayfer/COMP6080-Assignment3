@@ -3,7 +3,7 @@ import * as React from 'react';
 import GameInfo from './GameInfo'
 import renderer from 'react-test-renderer';
 
-describe('GameInfo', () => {  
+describe('GameInfo', () => {
   // const mockCallBack = jest.fn();
 
   it('uses custom title', () => {
