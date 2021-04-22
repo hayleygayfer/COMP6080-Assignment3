@@ -8,6 +8,7 @@ function GameResults () {
   const token = localStorage.getItem('token');
   const gameId = localStorage.getItem('gameIdForResults');
   const sessionId = localStorage.getItem('sessionIdForResults');
+  const [display, setDisplay] = React.useState('');
 
   console.log(gameId);
 
@@ -85,8 +86,10 @@ function GameResults () {
     const displayData = [];
     getSessionRequest(sessionId).then((sessionData) => {
       console.log(sessionData);
-      if (sessionData.length === 0) {
-        return (<p>There are no results for this quiz!</p>);
+      if (!sessionData) {
+        console.log('hello')
+        setDisplay(<p>There are no results for this quiz!</p>);
+        return;
       }
 
       const topFive = calculateTopFive(sessionData);
@@ -104,9 +107,34 @@ function GameResults () {
         {convertToChart(questionData)}
       </>);
 
-      return displayData;
+      setDisplay(displayData);
     });
   }
+
+  const [dataCorrect, setDataCorrect] = React.useState('');
+  const [dataResponse, setDataResponse] = React.useState('');
+
+  const data = React.useMemo(
+    () => [
+      {
+        label: 'Series 1',
+        data: dataCorrect
+      },
+      {
+        label: 'Series 2',
+        data: dataResponse
+      },
+    ],
+    []
+  )
+
+  const axes = React.useMemo(
+    () => [
+      { primary: true, type: 'linear', position: 'bottom' },
+      { type: 'linear', position: 'left' }
+    ],
+    []
+  )
 
   const convertToChart = (qData) => {
     const dataSpreadCorrect = [];
@@ -115,28 +143,8 @@ function GameResults () {
       dataSpreadCorrect.push([i, qData[i].correct])
       dataSpreadResponse.push([i, qData[i].responseTime])
     }
-
-    const data = React.useMemo(
-      () => [
-        {
-          label: 'Series 1',
-          data: dataSpreadCorrect
-        },
-        {
-          label: 'Series 2',
-          data: dataSpreadResponse
-        },
-      ],
-      []
-    )
-
-    const axes = React.useMemo(
-      () => [
-        { primary: true, type: 'linear', position: 'bottom' },
-        { type: 'linear', position: 'left' }
-      ],
-      []
-    )
+    setDataCorrect(dataSpreadCorrect);
+    setDataResponse(dataSpreadResponse);
 
     const lineChart = (
       // A react-chart hyper-responsively and continuously fills the available
@@ -155,6 +163,7 @@ function GameResults () {
 
   return (<>
     <button className='button' onClick={() => displayResultsData()}> Get Results </button>
+    {display}
   </>);
 }
 

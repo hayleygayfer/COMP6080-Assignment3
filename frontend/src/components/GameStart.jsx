@@ -1,5 +1,6 @@
 import React from 'react';
-import '../App.css'
+import '../App.css';
+import AdvanceQuestion from './AdvanceQuestion'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
@@ -49,6 +50,7 @@ function GameStart (gameId) {
     { // LINK TO 'COPY GAME URL' .. which will be /play_join:{gameId.input}
     }
     <button className='button smallButton' onClick={ () => { navigator.clipboard.writeText(url) } }> Copy Game URL </button>
+    {sessionId ? <AdvanceQuestion /> : <p>Quiz Not Started</p>}
   </>;
 }
 

@@ -6,14 +6,18 @@ const api = new API('http://localhost:5005');
 function AdvanceQuestion () {
   const token = localStorage.getItem('token');
   const gameId = localStorage.getItem('gameIdOfStartedGame');
-  const [questionTime, setQuestionTime] = React.useState(0);
+  const sessionId = localStorage.getItem('sessionIdOfStartedGame');
+  const [curQuestion, setCurQuestion] = React.useState('');
+  const [questionList, setQuestionList] = React.useState('');
 
-  const getGameRequest = async () => {
+  const getSessionStatus = async () => {
     try {
-      const request = await api.makeAPIRequest(`admin/quiz/${gameId}`, token, 'GET', '', '');
+      const request = await api.makeAPIRequest(`admin/session/${sessionId}/status`, token, 'GET', '', '');
       if (request) {
-        console.log('got Game Data');
-        return request;
+        console.log('got Session Data');
+        console.log(request);
+        setCurQuestion(request.position);
+        setQuestionList(request.questions);
       }
     } catch (error) {
       alert(`Invalid Question Request: ${error}`);
@@ -33,29 +37,29 @@ function AdvanceQuestion () {
     }
   }
 
-  const [timeLeft, setTimeLeft] = React.useState(calculateTimeLeft());
-
   React.useEffect(() => {
+    console.log('timing');
     const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
       advanceQuestionRequest();
-    }, questionTime);
+      getSessionStatus();
+      console.log('advancing');
+    }, questionList[curQuestion].timeLimit * 1000);
     return () => clearTimeout(timer);
   }, []);
 
   const progressQuiz = () => {
-    getGameRequest().then((gameData) => {
-      if (gameData.questions.length === 0) return 1;
-      let i = 1;
-      questionTime = gameData.questions[0].timeLimit;
-      while (i < gameData.questions.length) {
-        if (timeLeft === 0) {
-          setQuestionTime(gameData.questions[i].timeLimit);
-          i++;
-        }
-      }
-    });
+    console.log(`Starting Progress Quiz for gameID: ${gameId}`);
+    // START QUIZ
+    advanceQuestionRequest();
+    getSessionStatus();
   }
+
+  return (<>
+    <div>
+      <button className='button' onClick={() => progressQuiz()}> Start Questions </button><br/>
+      Current Question: {curQuestion}
+    </div>
+  </>)
 }
 
 export default AdvanceQuestion;
