@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import SetTimer from './SetTimer'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
@@ -7,8 +8,11 @@ function AdvanceQuestion () {
   const token = localStorage.getItem('token');
   const gameId = localStorage.getItem('gameIdOfStartedGame');
   const sessionId = localStorage.getItem('sessionIdOfStartedGame');
+  // const isTimerFinished = localStorage.getItem('questionFinished');
   const [curQuestion, setCurQuestion] = React.useState('');
   const [questionList, setQuestionList] = React.useState('');
+  const [startTimer, setStartTimer] = React.useState(false);
+  const [inputTime, setInputTime] = React.useState('');
 
   const getSessionStatus = async () => {
     try {
@@ -16,8 +20,8 @@ function AdvanceQuestion () {
       if (request) {
         console.log('got Session Data');
         console.log(request);
-        setCurQuestion(request.position);
-        setQuestionList(request.questions);
+        setCurQuestion(request.results.position);
+        setQuestionList(request.results.questions);
       }
     } catch (error) {
       alert(`Invalid Question Request: ${error}`);
@@ -40,24 +44,25 @@ function AdvanceQuestion () {
   const progressQuiz = () => {
     console.log(`Starting Progress Quiz for gameID: ${gameId}`);
     // START QUIZ
-    advanceQuestionRequest();
-    getSessionStatus();
+    advanceQuestionRequest().then(() => {
+      getSessionStatus().then(() => {
+        if (questionList.error) {
+          alert(`Could Not Start Questions!: ${questionList.error}`);
+          return 1;
+        }
+        if (!questionList) return 1;
+        console.log(questionList);
+        setInputTime(questionList[curQuestion].timeLimit * 1000);
+        setStartTimer(true);
+      });
+    });
   }
-
-  React.useEffect(() => {
-    console.log('timing');
-    const timer = setTimeout(() => {
-      advanceQuestionRequest();
-      getSessionStatus();
-      console.log('advancing');
-    }, questionList[curQuestion].timeLimit * 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (<>
     <div>
       <button className='button' onClick={() => progressQuiz()}> Start Questions </button><br/>
       Current Question: {curQuestion}
+      {startTimer ? <SetTimer input={inputTime}/> : <p>Questions have not started</p>}
     </div>
   </>)
 }
