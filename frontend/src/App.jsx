@@ -9,7 +9,7 @@ import {
 // Import pages
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
-// import Logout from './pages/Logout'
+import Logout from './pages/Logout'
 import Register from './pages/Register'
 import PlayJoin from './pages/PlayJoin'
 import GameResults from './pages/GameResults'
@@ -56,7 +56,7 @@ function App () {
             <GameResults />
           </Route>
           <Route path="/log_out">
-            { /* <Logout /> */ }
+            <Logout />
           </Route>
           <Route path="/">
             <Login />

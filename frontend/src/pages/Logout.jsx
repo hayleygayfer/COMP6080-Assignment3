@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import '../App.css'
 
 function Logout () {
-  document.getElementById('login').className = '';
-  document.getElementById('register').className = '';
-  document.getElementById('dashboard').className = 'hidden';
-  document.getElementById('join-game').className = 'hidden';
-  document.getElementById('logout').className = 'hidden';
-  // redirect to logout
+  if (document.getElementById('login')) document.getElementById('login').className = '';
+  if (document.getElementById('register')) document.getElementById('register').className = '';
+  if (document.getElementById('logout')) document.getElementById('logout').className = 'hidden';
+  if (document.getElementById('dashboard')) document.getElementById('dashboard').className = 'hidden';
+  if (document.getElementById('join-game')) document.getElementById('join-game').className = 'hidden';
+  // redirect to login
   const history = useHistory();
   history.push('/login')
   return <> </>
