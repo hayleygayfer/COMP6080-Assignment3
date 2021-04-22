@@ -7,10 +7,10 @@ const api = new API('http://localhost:5005');
 export function AddQuestion (data) {
   const token = localStorage.getItem('token');
   const [questionString, setQuestionString] = React.useState('');
-  const [questionAnswers, setQuestionAnswers] = React.useState('');
+  const [questionAnswers, setQuestionAnswers] = React.useState([]);
   const [timeLimit, setTimeLimit] = React.useState('');
   const [questionMedia, setQuestionMedia] = React.useState('');
-  const [correctAnswers, setCorrectAnswers] = React.useState('');
+  const [correctAnswers, setCorrectAnswers] = React.useState([]);
   const [answer, setAnswer] = React.useState('');
   const gameData = data.input.game;
   const gameId = data.input.id;
@@ -20,11 +20,15 @@ export function AddQuestion (data) {
       alert('This answer already exists');
       return 1;
     }
-    setQuestionAnswers(questionAnswers + answer);
+    const tempAnswers = questionAnswers;
+    tempAnswers.push(answer)
+    setQuestionAnswers(tempAnswers);
     console.log(questionAnswers);
 
     if (correct) {
-      setCorrectAnswers(correctAnswers + answer);
+      const tempCorrect = correctAnswers;
+      tempCorrect.push(answer);
+      setCorrectAnswers(tempCorrect);
       console.log(correctAnswers);
     }
     setAnswer('');

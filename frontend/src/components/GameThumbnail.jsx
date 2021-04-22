@@ -21,8 +21,8 @@ function GameThumbnail (gameList) {
   const [show, setShow] = React.useState(false);
 
   if (!gameData) {
-    console.log(gameData)
-    return (<></>)
+    console.log(gameData);
+    return (<></>);
   }
 
   for (let i = 0; i < gameData.length; i++) {
