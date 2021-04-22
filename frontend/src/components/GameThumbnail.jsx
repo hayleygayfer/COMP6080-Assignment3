@@ -3,6 +3,7 @@ import GameEdit from '../pages/GameEdit'
 import GameResults from '../pages/GameResults'
 import GameStart from './GameStart'
 import GameStop from './GameStop'
+import GameDelete from './GameDelete'
 import Modal from './Modal'
 import {
   BrowserRouter as Router,
@@ -29,6 +30,7 @@ function GameThumbnail (gameList) {
     const gameResultsPath = `/dashboard/game_results/:${gameData[i].id}`;
     const gameStartPath = '/dashboard/game_start/';
     const gameStopPath = '/dashboard/game_stop/';
+    const gameDeletePath = '/dashboard/game_delete/';
     const editInput = {
       title: 'Edit Game',
       content: <GameEdit input={gameData[i].id}/>
@@ -36,6 +38,10 @@ function GameThumbnail (gameList) {
     const resultsInput = {
       title: 'Results',
       content: <GameResults input={gameData[i].id}/>
+    }
+    const deleteInput = {
+      title: 'Delete Game?',
+      content: <GameDelete input={gameData[i].id}/>
     }
     const startInput = {
       title: 'Start Game:',
@@ -50,7 +56,6 @@ function GameThumbnail (gameList) {
     // determine whether this quiz has started (aka is active)
     let started = false;
     if (gameData[i].active === null) started = true
-    console.log(started)
 
     gameThumbnails.push(<>
       <Router>
@@ -75,6 +80,9 @@ function GameThumbnail (gameList) {
               <li>
                 {started ? <Link to={gameStartPath} onClick={() => setShow(true)}>Start Game</Link> : <Link to={gameStopPath} onClick={() => setShow(true)}>Stop Game</Link> }
               </li>
+              <li>
+                <Link to={gameDeletePath} onClick={() => setShow(true)}>Delete Game</Link>
+              </li>
             </ul>
           </nav>
           <Switch>
@@ -89,6 +97,9 @@ function GameThumbnail (gameList) {
             </Route>
             <Route path={gameStopPath}>
               <Modal input={stopInput} show={show} onClose={() => setShow(false)}/>
+            </Route>
+            <Route path={gameDeletePath}>
+              <Modal input={deleteInput} show={show} onClose={() => setShow(false)}/>
             </Route>
           </Switch>
         </div>
