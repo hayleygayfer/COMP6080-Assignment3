@@ -21,6 +21,7 @@ const ShowQuestionInfo = (props) => {
   // const [questionData, setQuestionData] = React.useState([]);
 
   const getQuestionData = async () => {
+    // NOTE - I can get the right data, just can't seem to push it to QuestionDataToDisplay
     QuestionDataToDisplay.push(
     <>
     Questions: <br/>
