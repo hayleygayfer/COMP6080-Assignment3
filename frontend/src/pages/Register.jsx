@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import API from '../api.js';
+import Button from '../components/Button'
 const api = new API('http://localhost:5005');
 
 function Register () {
@@ -69,7 +70,7 @@ function Register () {
           value={nameInput}
         />
       </div>
-      <button className='button' onClick={registerRequest}> Register </button>
+      <Button text='Register' onClickFunction={registerRequest}/>
     </div>
   </>;
 }

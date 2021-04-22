@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import '../App.css'
+import Button from '../components/Button'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
@@ -51,7 +52,7 @@ function Login () {
           value={passwordInput}
         />
       </div>
-      <button className='button' onClick={loginRequest}> Login </button>
+      <Button text='Login' onClickFunction={loginRequest}/>
     </div>
   </>;
 }
