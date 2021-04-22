@@ -37,6 +37,13 @@ function AdvanceQuestion () {
     }
   }
 
+  const progressQuiz = () => {
+    console.log(`Starting Progress Quiz for gameID: ${gameId}`);
+    // START QUIZ
+    advanceQuestionRequest();
+    getSessionStatus();
+  }
+
   React.useEffect(() => {
     console.log('timing');
     const timer = setTimeout(() => {
@@ -46,13 +53,6 @@ function AdvanceQuestion () {
     }, questionList[curQuestion].timeLimit * 1000);
     return () => clearTimeout(timer);
   }, []);
-
-  const progressQuiz = () => {
-    console.log(`Starting Progress Quiz for gameID: ${gameId}`);
-    // START QUIZ
-    advanceQuestionRequest();
-    getSessionStatus();
-  }
 
   return (<>
     <div>

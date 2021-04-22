@@ -67,7 +67,7 @@ function GameEdit (id) {
     setQuestionList(questions);
   }
 
-  const gamePath = `/dashboard/game_edit/question/:${gameId}`;
+  const gamePath = `/dashboard/game_edit/add_question/:${gameId}`;
 
   /* const displayQuestionsEverySecond = (gameId) => {
     const [seconds, setSeconds] = React.useState(0);
@@ -96,6 +96,7 @@ function GameEdit (id) {
   const inputs = {
     gameId: gameId,
     questionId: qId,
+    gameData: game
   }
 
   const modalInput = {
@@ -111,22 +112,25 @@ function GameEdit (id) {
           displayQuestions(gameId);
         }}>Add Question</Link>
         <div>
-          Enter Question ID:<input
-            type="text"
-            onChange={e => {
-              setQId(e.target.value);
-              setQuestionPath(`/dashboard/game_edit/question/:${gameId}/:${qId}`)
-            }}
-            value={qId}
-          />
+          <h4>Edit a Question</h4>
+          <div>
+            Enter Question ID:<input
+              type="text"
+              onChange={e => {
+                setQId(e.target.value);
+                setQuestionPath(`/dashboard/game_edit/edit_question/:${gameId}/:${qId}`)
+              }}
+              value={qId}
+            />
+          </div>
+          <Link to={questionPath} onClick={() => {
+            if (qId >= gameQuestions.length || qId < 0) {
+              alert('Not a valid Question ID');
+            } else {
+              setShow(true);
+            }
+          }}>Edit Question: {qId}</Link>
         </div>
-        <Link to={questionPath} onClick={() => {
-          if (qId >= gameQuestions.length || qId < 0) {
-            alert('Not a valid Question ID');
-          } else {
-            setShow(true);
-          }
-        }}>Edit Question: {qId}</Link>
         <Switch>
           <Route path={gamePath}>
             {console.log('adding')}
