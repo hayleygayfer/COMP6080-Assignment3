@@ -13,8 +13,46 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../App.css'
+// import API from '../api.js';
 
-/* STUB */
+const ShowQuestionInfo = (props) => {
+  // const api = new API('http://localhost:5005');
+  const QuestionDataToDisplay = []
+  // const [questionData, setQuestionData] = React.useState([]);
+
+  const getQuestionData = async () => {
+    QuestionDataToDisplay.push(
+    <>
+    Questions: <br/>
+    Est. time to complete: <br/>
+    </>)
+    /*
+    const token = localStorage.getItem('token');
+    try {
+      const request = await api.makeAPIRequest(`admin/quiz/${props.gameId}`, token, 'GET', '', '');
+      if (request) {
+        setQuestionData(request.questions)
+        )
+      }
+    } catch (error) {
+      alert(`Invalid: ${error}`);
+    }
+    console.log('question data')
+    console.log(questionData)
+    */
+  }
+  console.log('question data to display:')
+  console.log(QuestionDataToDisplay)
+  getQuestionData()
+  return <>
+  {QuestionDataToDisplay}
+  </>
+}
+
+ShowQuestionInfo.propTypes = {
+  gameId: PropTypes.number,
+}
+
 function GameThumbnail (gameList) {
   const gameThumbnails = [];
   const gameData = gameList.gameList;
@@ -60,8 +98,9 @@ function GameThumbnail (gameList) {
     gameThumbnails.push(<>
       <Router>
         <div className="game-card" key='game-card'>
-          id: {gameData[i].id}<br/>
-          Name: {gameData[i].name}<br/>
+          Title: {gameData[i].name}<br/>
+          Thumbnail: {gameData[i].thumbnail ? <img src={gameData[i].thumbnail}> </img> : 'none provided' } <br/>
+          <ShowQuestionInfo gameId={gameData[i].id} />
           <img src={gameData[i].thumbnail} key='img'/><br/>
           <nav key='nav'>
             <ul>
