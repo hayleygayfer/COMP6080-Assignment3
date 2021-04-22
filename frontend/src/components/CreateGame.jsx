@@ -47,7 +47,7 @@ function CreateGame () {
         // send them to dashboard
         request.json().then((data) => {
           setNewQuizId(data.quizId)
-          console.log(newQuizId);
+          alert(`Game Created! id: ${data.quizId}`);
           if (gameJSON !== '') {
             if (validateGameJSON(gameJSON) === false) {
               alert('File does not match valid JSON game data structure');
@@ -55,7 +55,6 @@ function CreateGame () {
             loadGameDataRequest(newQuizId);
           }
         });
-        alert(`Game Created! id: ${newQuizId}`);
         setNameInput('');
       } else throw request.status
     } catch (error) {

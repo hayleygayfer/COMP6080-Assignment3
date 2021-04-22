@@ -13,12 +13,10 @@ function GameDelete (gameId) {
   }
   deleteRequest();
   return <>
-    <h2> Are you sure you want to delete this game? </h2>
+    <h2> Game has been deleted </h2>
     { // LINK TO results (parameterised on the session ID)
       // localStorage.setItem('token', data.token);
     }
-    <button className='button smallButton' onClick={deleteRequest}> Yes </button>
-    <p> pls press close after </p>
   </>;
 }
 
