@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GameInfo handles no thumbnail (snapshot) 1`] = `
+Array [
+  "Title: ",
+  <br />,
+  "Thumbnail: ",
+  "none provided",
+  " ",
+  <br />,
+]
+`;
+
+exports[`GameInfo uses custom image src (snapshot) 1`] = `
+Array [
+  "Title: ",
+  <br />,
+  "Thumbnail: ",
+  <img
+    src="https://i.pinimg.com/236x/5c/d2/c8/5cd2c8ccbce5f05e3a1023d94b7ee732.jpg"
+  >
+     
+  </img>,
+  " ",
+  <br />,
+]
+`;
+
+exports[`GameInfo uses custom title (snapshot) 1`] = `
+Array [
+  "Title: ",
+  "RATTLEBONE'S GAME",
+  <br />,
+  "Thumbnail: ",
+  "none provided",
+  " ",
+  <br />,
+]
+`;

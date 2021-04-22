@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddQuestion uses given text through props 1`] = `
+exports[`Button uses given text through props 1`] = `
 <button
   className="button"
   onClick={[Function]}

@@ -5,30 +5,36 @@ import renderer from 'react-test-renderer';
 
 describe('AddQuestion', () => {
   const mockCallBack = jest.fn();
+  const addQInput = {
+    game: "",
+    id: 297083846
+  }
+  const dodgyInput = {
+    game: "",
+    id: 1234567
+  }
+  const correctHTML = '<div>Question: <input type="text" value=""/><br/>Time Limit: <input type="text" value=""/><br/><div>Answer: <input type="text" value=""/><br/><button class="button">Add Answer as Correct</button><button class="button">Add Answer as Incorrect</button><br/>All Answers:<br/><br/>Correct Answers:<br/><br/></div>Image or Video: <input type="text" value=""/><br/></div><button class="button"> Submit Question </button>'
 
   it('triggers onClick event handler when clicked', () => {
-    const buttonData = shallow((<AddQuestion />)).first('button');
+    const buttonData = shallow((<AddQuestion input={addQInput}/>)).first('button');
     const button = shallow((<buttonData onClick={mockCallBack}>Ok!</buttonData>));
     button.simulate('click');
     expect(mockCallBack.mock.calls.length).toEqual(1);
   });
 
-  // does questionEditor appears when add question button clicked?
-  it('questionEditor appears when "AddQuestion" button clicked', () => {
-    const wrapper = shallow((<AddQuestion />));
-    wrapper.find('button').simulate('click');
-    expect(wrapper.html()).toEqual('<button class="button"> Open Editor </button><div>Question: <input type="text" value=""/><br/>Time Limit: <input type="text" value=""/><br/>Answers: <input type="text" value=""/><br/>Image or Video: <input type="text" value=""/><br/></div><button class="button"> Submit Question </button>');
+  it('returns specific html', () => {
+    const wrapper = shallow((<AddQuestion input={addQInput}/>));
+    expect(wrapper.html()).toEqual(correctHTML);
   });
 
-  // questionEditor shouldn't appear when nothing's clicked?
-  it('initially only returns a button', () => {
-    const wrapper = shallow(<AddQuestion />);
-    expect(wrapper.html()).toEqual('<button class="button"> Open Editor </button>');
+  it('returns same inital output with dodgy game id', () => {
+    const wrapper = shallow(<AddQuestion input={dodgyInput}/>);
+    expect(wrapper.html()).toEqual(correctHTML);
   });
 
   // SNAPSHOT TESTING TO INCASE ANYTHING CHANGES:
   it('renders correctly when no click (snapshot)', () => {
-    const wrapper = renderer.create(<AddQuestion />).toJSON();
+    const wrapper = renderer.create(<AddQuestion input={addQInput}/>).toJSON();
     expect(wrapper).toMatchSnapshot();
   });
 });

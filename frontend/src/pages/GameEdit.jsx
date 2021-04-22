@@ -87,6 +87,7 @@ function GameEdit (id) {
     game: game,
     id: gameId
   }
+  console.log(addQInput)
 
   const addInput = {
     title: 'Add Question',

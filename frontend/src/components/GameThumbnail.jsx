@@ -5,6 +5,7 @@ import GameStart from './GameStart'
 import GameStop from './GameStop'
 import GameDelete from './GameDelete'
 import Modal from './Modal'
+import GameInfo from './GameInfo'
 import {
   BrowserRouter as Router,
   Switch,
@@ -99,10 +100,8 @@ function GameThumbnail (gameList) {
     gameThumbnails.push(<>
       <Router>
         <div className="game-card" key='game-card'>
-          Title: {gameData[i].name}<br/>
-          Thumbnail: {gameData[i].thumbnail ? <img src={gameData[i].thumbnail}> </img> : 'none provided' } <br/>
+          <GameInfo title={gameData[i].name} thumbnail={gameData[i].thumbnail}/>
           <ShowQuestionInfo gameId={gameData[i].id} />
-          <img src={gameData[i].thumbnail} key='img'/><br/>
           <nav key='nav'>
             <ul>
               {/* These Routes must be paratmeterised (And placed in the correct positions on the Dashboard), they are just stubs */}

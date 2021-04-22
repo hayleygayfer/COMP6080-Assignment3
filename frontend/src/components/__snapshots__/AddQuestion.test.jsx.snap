@@ -1,19 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddQuestion renders correctly when click happens (snapshot) 1`] = `
-<button
-  className="button"
-  onClick={[Function]}
->
-   Open Editor 
-</button>
-`;
-
 exports[`AddQuestion renders correctly when no click (snapshot) 1`] = `
-<button
-  className="button"
-  onClick={[Function]}
->
-   Open Editor 
-</button>
+Array [
+  <div>
+    Question: 
+    <input
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <br />
+    Time Limit: 
+    <input
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <br />
+    <div>
+      Answer: 
+      <input
+        onChange={[Function]}
+        type="text"
+        value=""
+      />
+      <br />
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Add Answer as Correct
+      </button>
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Add Answer as Incorrect
+      </button>
+      <br />
+      All Answers:
+      <br />
+      <br />
+      Correct Answers:
+      <br />
+      <br />
+    </div>
+    Image or Video: 
+    <input
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <br />
+  </div>,
+  <button
+    className="button"
+    onClick={[Function]}
+  >
+     Submit Question 
+  </button>,
+]
 `;
