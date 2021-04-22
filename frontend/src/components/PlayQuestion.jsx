@@ -1,26 +1,44 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import WaitingRoom from './WaitingRoom'
 import '../App.css'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
-/* STUB */
 function PlayQuestion () {
   // commenting out temporarily to avoid linting errors
   const [questionData, setQuestionData] = React.useState('');
   const [questionTime, setQuestionTime] = React.useState('');
   const [answerId, setAnswerId] = React.useState('');
+  const [started, setStarted] = React.useState(false);
   const [correctAnswer, setCorrectAnswer] = React.useState('');
 
   const history = useHistory();
   const playID = localStorage.getItem('playID');
+  console.log('PLay Id:')
   console.log(playID);
   const answersList = [];
+  // get status... if quiz not started... show waiting room...
+  // setStarted
+  // /play/{playerid}/status
+  const getPlayerStatus = async () => {
+    try {
+      const request = await api.makeAPIRequest(`play/${playID}/status`, '', 'GET', '', '');
+      if (request) {
+        const data = request;
+        console.log('has game started?')
+        console.log(data);
+        setStarted(data.started)
+      }
+    } catch (error) {
+      alert(`Invalid: ${error}`);
+    }
+  }
+
   const getQuestionRequest = async () => {
     try {
       const request = await api.makeAPIRequest(`play/${playID}/question`, '', 'GET', '', '');
       if (request) {
-        console.log('Got Question');
         const data = request;
         console.log(data);
         console.log(data.quizQuestionPublicReturn);
@@ -101,11 +119,14 @@ function PlayQuestion () {
   const [timeLeft, setTimeLeft] = React.useState(calculateTimeLeft());
 
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-      getQuestionRequest();
-    }, questionData.timeLimit);
-    return () => clearTimeout(timer);
+    getPlayerStatus()
+    if (started) {
+      const timer = setTimeout(() => {
+        setTimeLeft(calculateTimeLeft());
+        getQuestionRequest();
+      }, questionData.timeLimit);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const timerComponents = [];
@@ -121,13 +142,20 @@ function PlayQuestion () {
       </span>
     );
   });
-
+  console.log('question data:')
+  console.log(questionData)
+  console.log(answerId)
   return <>
     <div>
-      Question: {questionData.questionString}<br/>
-      <img src={questionData.mediaSource} /><br/>
-      Time Left: {timerComponents.length ? timerComponents : getQuestionResultsRequest}<br/>
-      Answers: {answersList}<br/>
+      { started ? getQuestionResultsRequest() : <WaitingRoom playID={playID} />}
+      {
+        /*
+        Question: {questionData.questionString} <br/>
+        <img src={questionData.mediaSource} /><br/>
+        Time Left: {timerComponents.length ? timerComponents : getQuestionResultsRequest}<br/>
+        Answers: {answersList}<br/>
+        */
+      }
     </div>
   </>
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayQuestion from '../components/PlayQuestion'
+import PlayGame from './PlayGame'
 
 import { useHistory } from 'react-router-dom';
 import '../App.css'
@@ -41,6 +41,8 @@ function PlayJoin () {
 
   let joined = false;
   if (playId !== '') joined = true;
+  console.log('joined the game yet babes?')
+  console.log(joined)
   const joinGameCard = (<>
     <div className='App'>
       <h2>Join Game Session</h2>
@@ -67,7 +69,7 @@ function PlayJoin () {
   </>)
 
   return <>
-    {joined ? <PlayQuestion /> : joinGameCard}
+    {joined ? <PlayGame /> : joinGameCard}
   </>
 }
 

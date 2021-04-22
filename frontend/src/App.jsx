@@ -12,6 +12,7 @@ import Login from './pages/Login'
 import Logout from './pages/Logout'
 import Register from './pages/Register'
 import PlayJoin from './pages/PlayJoin'
+import PlayGame from './pages/PlayGame'
 import GameResults from './pages/GameResults'
 import './App.css';
 
@@ -57,6 +58,9 @@ function App () {
           </Route>
           <Route path="/log_out">
             <Logout />
+          </Route>
+          <Route path="/play_game">
+            <PlayGame />
           </Route>
           <Route path="/">
             <Login />

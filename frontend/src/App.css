@@ -59,6 +59,15 @@ ul {
   font-size: 2vh;
 }
 
+.waiting-room{
+  background-color: #c8e5f0;
+  text-align: center;
+  width: "95%";
+  margin: auto; 
+  padding: 10px;
+  font-size: 2vh;
+}
+
 .navBar {
   background-color: #fbd3ff;
 }
