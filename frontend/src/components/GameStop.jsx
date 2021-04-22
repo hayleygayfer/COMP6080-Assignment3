@@ -14,8 +14,8 @@ function GameStop (gameId) {
       const token = localStorage.getItem('token');
       const request = await api.makeAPIRequest('admin/quiz/' + gameId.input + '/end', token, 'POST', '', '');
       console.log(request)
-      localStorage.setItem('gameIdOfStartedGame', null);
-      localStorage.setItem('sessionIdOfStartedGame', null);
+      localStorage.setItem('gameIdOfStartedGame', '');
+      localStorage.setItem('sessionIdOfStartedGame', '');
     } catch (error) {
     }
   }

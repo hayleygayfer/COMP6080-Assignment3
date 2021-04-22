@@ -1,20 +1,32 @@
 import React from 'react';
 import '../App.css';
-import SetTimer from './SetTimer'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
-function AdvanceQuestion () {
+function AdvanceQuestion (input) {
   const token = localStorage.getItem('token');
-  const gameId = localStorage.getItem('gameIdOfStartedGame');
-  const sessionId = localStorage.getItem('sessionIdOfStartedGame');
-  // const isTimerFinished = localStorage.getItem('questionFinished');
+  const gameId = input.input.gameId;
+
+  const [sessionId, setSessionId] = React.useState('');
   const [curQuestion, setCurQuestion] = React.useState('');
   const [questionList, setQuestionList] = React.useState('');
-  const [startTimer, setStartTimer] = React.useState(false);
-  const [inputTime, setInputTime] = React.useState('');
+  const [timeStarted, setTimeStarted] = React.useState(0);
 
-  const getSessionStatus = async () => {
+  const getSessionIdRequest = async () => {
+    try {
+      const request = await api.makeAPIRequest(`admin/quiz/${gameId}`, token, 'GET', '', '')
+      if (request) {
+        setSessionId(request.active);
+        console.log(`Got session id: ${sessionId}`);
+      }
+    } catch (error) {
+      alert(`Couldnt Get Quiz Session: ${error}`);
+    }
+  }
+
+  const getSessionStatus = async (sessionId) => {
+    console.log(sessionId);
+    if (!sessionId) return;
     try {
       const request = await api.makeAPIRequest(`admin/session/${sessionId}/status`, token, 'GET', '', '');
       if (request) {
@@ -22,6 +34,8 @@ function AdvanceQuestion () {
         console.log(request);
         setCurQuestion(request.results.position);
         setQuestionList(request.results.questions);
+        setTimeStarted(request.results.isoTimeLastQuestionStarted);
+        console.log(timeStarted);
       }
     } catch (error) {
       alert(`Invalid Question Request: ${error}`);
@@ -41,28 +55,50 @@ function AdvanceQuestion () {
     }
   }
 
-  const progressQuiz = () => {
-    console.log(`Starting Progress Quiz for gameID: ${gameId}`);
-    // START QUIZ
-    advanceQuestionRequest().then(() => {
-      getSessionStatus().then(() => {
-        if (questionList.error) {
-          alert(`Could Not Start Questions!: ${questionList.error}`);
-          return 1;
-        }
-        if (!questionList) return 1;
-        console.log(questionList);
-        setInputTime(questionList[curQuestion].timeLimit * 1000);
-        setStartTimer(true);
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    console.log('Use effect');
+    const timer = setTimeout(() => {
+      setCount(count + 1);
+      console.log('Checking if Question is finished');
+      getSessionIdRequest().then(() => {
+        console.log('In timer run session Id');
+        getSessionStatus(sessionId).then(() => {
+          console.log('In timer run session status');
+          if (curQuestion === -1) {
+            console.log('first question');
+            advanceQuestionRequest();
+            setCount(0);
+          } else {
+            console.log('getting times');
+            const currentTime = new Date();
+            const startTime = new Date(timeStarted);
+            console.log(currentTime.getTime());
+            console.log(startTime.getTime());
+            const difference = currentTime.getTime() - startTime.getTime();
+            console.log(difference);
+            console.log(questionList);
+            if (questionList) {
+              console.log(questionList);
+              console.log(curQuestion);
+              if (curQuestion === questionList.length - 1) return;
+              if ((difference / 1000) === questionList[curQuestion].timeLimit) {
+                advanceQuestionRequest();
+                setCount(0);
+              }
+            }
+          }
+        });
       });
-    });
-  }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (<>
     <div>
-      <button className='button' onClick={() => progressQuiz()}> Start Questions </button><br/>
-      Current Question: {curQuestion}
-      {startTimer ? <SetTimer input={inputTime}/> : <p>Questions have not started</p>}
+      Current Question: {questionList ? questionList[curQuestion].questionString : <p>Getting First Question...</p>}<br/>
+      Seconds: {count}
     </div>
   </>)
 }
