@@ -1,11 +1,9 @@
 import React from 'react';
 import '../App.css';
-import AdvanceQuestion from './AdvanceQuestion'
 import API from '../api.js';
 const api = new API('http://localhost:5005');
 
 function GameStart (gameId) {
-  const url = `${window.location.origin}/play_join?game_id=${gameId.input}`;
   const token = localStorage.getItem('token');
   const [sessionId, setSessionId] = React.useState('');
 
@@ -49,8 +47,8 @@ function GameStart (gameId) {
     <p>Session Id: {sessionId}</p>
     { // LINK TO 'COPY GAME URL' .. which will be /play_join:{gameId.input}
     }
-    <button className='button smallButton' onClick={ () => { navigator.clipboard.writeText(url) } }> Copy Game URL </button>
-    {sessionId ? <AdvanceQuestion /> : <p>Quiz Not Started</p>}
+    <button className='button smallButton' onClick={ () => { navigator.clipboard.writeText(`${window.location.origin}/play_join?game_id=${sessionId}`) } }> Copy Game URL </button>
+    {sessionId ? <p>Quiz Started</p> : <p>Quiz Not Started</p>}
   </>;
 }
 
