@@ -58,6 +58,7 @@ function Dashboard () {
       <div className='App'>
         <Link to="/dashboard" onClick={() => setShow(true)}> Create New Game </Link>
         <button className='button' onClick={gameListRequest}> Display Dash </button>
+        <p> note: pls press &#39;Display Dash&#39; again after Creating, Deleteing or Stopping a game to refresh </p>
         <GameThumbnail gameList={gameData} />
       </div>
       <Switch>
